@@ -1,0 +1,53 @@
+
+> recursero102@0.0.0 lint
+> eslint .
+
+
+C:\Users\Nico\Desktop\Recursero102\create-admin.js
+   3:37  error  'serverTimestamp' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  10:13  error  'process' is not defined                                                                no-undef
+  11:17  error  'process' is not defined                                                                no-undef
+  12:16  error  'process' is not defined                                                                no-undef
+  13:20  error  'process' is not defined                                                                no-undef
+  14:24  error  'process' is not defined                                                                no-undef
+  15:12  error  'process' is not defined                                                                no-undef
+  16:20  error  'process' is not defined                                                                no-undef
+  36:13  error  'process' is not defined                                                                no-undef
+  57:9   error  'process' is not defined                                                                no-undef
+  65:9   error  'process' is not defined                                                                no-undef
+
+C:\Users\Nico\Desktop\Recursero102\src\App.jsx
+  67:44  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  65 |             <Route path="/login" element={!user ? <Login /> : <Navigate to={isFirstLogin ? "/cambiar-password" : "/admin"} replace />} />
+  66 |             <Route path="/cambiar-password" element={user && isFirstLogin ? <ChangePassword /> : <Navigate to={user ? "/admin" : "/login"} replace />} />
+> 67 |             <Route path="/admin" element={<AdminRoute />} />
+     |                                            ^^^^^^^^^^ This component is created during render
+  68 |           </Routes>
+  69 |         </main>
+  70 |       </div>
+
+  49 |
+  50 |   // Route wrapper for Admin that enforces password change
+> 51 |   const AdminRoute = () => {
+     |                      ^^^^^^^
+> 52 |     if (!user) return <Navigate to="/login" replace />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 53 |     if (isFirstLogin) return <Navigate to="/cambiar-password" replace />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 54 |     return <AdminPanel />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 55 |   };
+     | ^^^^ The component is created during render here
+  56 |
+  57 |   return (
+  58 |     <Router>  react-hooks/static-components
+
+C:\Users\Nico\Desktop\Recursero102\src\components\RegisterUser.jsx
+  4:40  error  'getDoc' is defined but never used. Allowed unused vars must match /^[A-Z_]/u    no-unused-vars
+  5:38  error  'mainAuth' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+Ô£û 14 problems (14 errors, 0 warnings)
+

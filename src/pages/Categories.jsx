@@ -1,0 +1,155 @@
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { getResources } from '../services/resourceService';
+import ResourceCard from '../components/ResourceCard';
+import { AlertCircle, Filter, Dna, Microscope, Leaf, Bug, Zap, Orbit, Activity, Calculator, PieChart, Binary, TrendingUp, Pencil, BookOpen, Shapes, Backpack, Palette, Smile, Gamepad, Baby, Coins, Building, Banknote, TreeDeciduous, Recycle, Sun, Sprout, HeartHandshake, Users, Heart, Ear, MessageCircle, Mic, Volume2, Monitor, Cpu, Wifi, Bot } from 'lucide-react';
+import '../styles/home.css';
+import '../styles/categories.css';
+
+const getCategoryTheme = (category) => {
+    switch (category) {
+        case 'Biología':
+            return {
+                className: 'theme-biologia',
+                icons: [Dna, Microscope, Leaf, Bug],
+                subtitle: 'Explora recursos sobre células, ADN, ecosistemas y organismos vivos.'
+            };
+        case 'Física':
+            return {
+                className: 'theme-fisica',
+                icons: [Zap, Orbit, Activity, Calculator],
+                subtitle: 'Encuentra gráficos de ecuaciones, representaciones de caída libre, movimiento y energía.'
+            };
+        case 'Matemática':
+            return {
+                className: 'theme-matematica',
+                icons: [Calculator, PieChart, Binary, TrendingUp],
+                subtitle: 'Material didáctico sobre fórmulas, símbolos matemáticos y gráficos de funciones.'
+            };
+        case 'Primaria':
+            return {
+                className: 'theme-primaria',
+                icons: [Pencil, BookOpen, Shapes, Backpack],
+                subtitle: 'Recursos amigables y básicos para la enseñanza inicial y primaria.'
+            };
+        case 'Inicial':
+            return {
+                className: 'theme-inicial',
+                icons: [Palette, Smile, Gamepad, Baby],
+                subtitle: 'Elementos visuales simples, coloridos y orientados a la educación temprana.'
+            };
+        case 'Economía':
+            return {
+                className: 'theme-economia',
+                icons: [TrendingUp, Coins, Building, Banknote],
+                subtitle: 'Gráficos de estadísticas, recursos de comercio, dinero y producción.'
+            };
+        case 'Educación Ambiental':
+            return {
+                className: 'theme-ambiental',
+                icons: [TreeDeciduous, Recycle, Sun, Sprout],
+                subtitle: 'Concientización, reciclaje, energías renovables y cuidado de la naturaleza.'
+            };
+        case 'ESI (Educación Sexual Integral)':
+            return {
+                className: 'theme-esi',
+                icons: [HeartHandshake, Users, Heart, Smile],
+                subtitle: 'Materiales claros y respetuosos sobre diversidad, inclusión y derechos.'
+            };
+        case 'Fonoaudiología':
+            return {
+                className: 'theme-fonoaudiologia',
+                icons: [Ear, MessageCircle, Mic, Volume2],
+                subtitle: 'Recursos relacionados con el lenguaje, la comunicación y la audición.'
+            };
+        case 'Tics':
+            return {
+                className: 'theme-tics',
+                icons: [Monitor, Cpu, Wifi, Bot],
+                subtitle: 'Tecnología, computadoras, redes e inteligencia artificial aplicada al aula.'
+            };
+        default:
+            return {
+                className: 'theme-default',
+                icons: [BookOpen, Shapes, Monitor, Leaf],
+                subtitle: 'Encuentra material didáctico específico para esta área de estudio.'
+            };
+    }
+};
+
+const Categories = () => {
+    const [resources, setResources] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const location = useLocation();
+
+    // Get the 'tipo' query parameter
+    const searchParams = new URLSearchParams(location.search);
+    const categoryFilter = searchParams.get('tipo');
+
+    useEffect(() => {
+        const fetchFilteredResources = async () => {
+            setLoading(true);
+            try {
+                const data = await getResources(categoryFilter);
+                setResources(data);
+            } catch (error) {
+                console.error("Error fetching categorized resources:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (categoryFilter) {
+            fetchFilteredResources();
+        } else {
+            setLoading(false);
+        }
+    }, [categoryFilter]);
+
+    const theme = getCategoryTheme(categoryFilter);
+
+    return (
+        <div className="category-container animate-fade-in">
+            {!categoryFilter ? (
+                <div className="alert alert-error mt-10">
+                    <AlertCircle size={16} />
+                    <span>Seleccione una categoría desde el menú principal para comenzar.</span>
+                </div>
+            ) : (
+                <>
+                    <div className={`category-header ${theme.className}`}>
+                        <div className="category-bg-icons">
+                            {theme.icons.map((Icon, idx) => (
+                                <Icon key={idx} size={84} className="category-icon-anim" />
+                            ))}
+                        </div>
+                        <h1 className="category-title">{categoryFilter}</h1>
+                        <p className="category-subtitle">{theme.subtitle}</p>
+                    </div>
+
+                    <div className="resources-grid">
+                        {loading ? (
+                            <div className="loading-state text-center py-5">
+                                <p className="text-secondary">Cargando recursos de {categoryFilter}...</p>
+                            </div>
+                        ) : resources.length > 0 ? (
+                            <div className="grid grid-cols-1 md-grid-cols-2 lg-grid-cols-3">
+                                {resources.map((resource) => (
+                                    <ResourceCard key={resource.id} resource={resource} />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="empty-state text-center py-5">
+                                <Filter size={48} className="mx-auto mb-3 text-secondary" />
+                                <h3 className="mb-2">Aún no hay recursos aquí</h3>
+                                <p className="text-secondary">No se han subido materiales en la sección '{categoryFilter}'.</p>
+                            </div>
+                        )}
+                    </div>
+                </>
+            )}
+        </div>
+    );
+};
+
+export default Categories;
