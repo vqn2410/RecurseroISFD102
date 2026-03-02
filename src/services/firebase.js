@@ -14,6 +14,12 @@ export const firebaseConfig = {
     measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
+// Debug helper para Vercel (aviso en consola si faltan variables)
+if (!firebaseConfig.apiKey) {
+    console.warn("⚠️ ERROR CRÍTICO: La API Key de Firebase está vacía.");
+    console.warn("Si estás en Vercel, asegúrate de haber agregado VITE_FIREBASE_API_KEY en 'Environment Variables'.");
+}
+
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
