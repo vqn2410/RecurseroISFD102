@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect, useState, Suspense, lazy } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db, isFirebaseConfigured } from './services/firebase';
 
 import Navbar from './components/Navbar';
@@ -38,7 +38,22 @@ function App() {
             setUserData(data);
             setIsFirstLogin(data.firstLogin === true);
           } else {
-            setUserData(null);
+            // Auto-provision initial users missing from Firestore 'users'
+            const emailPart = currentUser.email ? currentUser.email.split('@')[0] : 'Docente';
+            const isRootAdmin = currentUser.email === 'nvergara@abc.gob.ar' || currentUser.email === 'recursosoficial102@gmail.com';
+
+            const newUserData = {
+              uid: currentUser.uid,
+              email: currentUser.email,
+              nombreCompleto: currentUser.displayName || emailPart,
+              rol: isRootAdmin ? "administrador" : "docente",
+              firstLogin: false,
+              fechaCreacion: serverTimestamp(),
+              onlineStatus: true
+            };
+
+            await setDoc(userDocRef, newUserData);
+            setUserData(newUserData);
             setIsFirstLogin(false);
           }
         } catch (error) {
