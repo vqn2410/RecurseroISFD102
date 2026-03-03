@@ -54,13 +54,15 @@ const RegisterUser = () => {
 
         } catch (err) {
             console.error("Registration error:", err);
-            let errMsg = 'Ocurrió un error al registrar el docente. Intente nuevamente.';
+            let errMsg = 'Ocurrió un error al registrar el docente.';
             if (err.code === 'auth/email-already-in-use') {
                 errMsg = 'El email ingresado ya está registrado.';
             } else if (err.code === 'auth/weak-password') {
                 errMsg = 'La contraseña debe tener al menos 6 caracteres.';
             } else if (err.code === 'auth/invalid-email') {
                 errMsg = 'El formato del email no es válido.';
+            } else {
+                errMsg = `Ocurrió un error: ${err.message}`;
             }
             setError(errMsg);
             alert(errMsg);
