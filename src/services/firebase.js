@@ -15,14 +15,20 @@ export const firebaseConfig = {
 };
 
 // Debug helper para Vercel (aviso en consola si faltan variables)
-if (!firebaseConfig.apiKey) {
-    console.warn("⚠️ ERROR CRÍTICO: La API Key de Firebase está vacía.");
-    console.warn("Si estás en Vercel, asegúrate de haber agregado VITE_FIREBASE_API_KEY en 'Environment Variables'.");
+export const isFirebaseConfigured = !!firebaseConfig.apiKey;
+
+let app;
+try {
+    if (isFirebaseConfigured) {
+        app = initializeApp(firebaseConfig);
+    } else {
+        console.error("⚠️ ERROR CRÍTICO: La API Key de Firebase está vacía. Faltan variables de entorno.");
+    }
+} catch (error) {
+    console.error("Error inicializando Firebase:", error);
 }
 
-const app = initializeApp(firebaseConfig);
-
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
-export const analytics = getAnalytics(app);
+export const auth = app ? getAuth(app) : null;
+export const db = app ? getFirestore(app) : null;
+export const storage = app ? getStorage(app) : null;
+export const analytics = app ? getAnalytics(app) : null;
