@@ -1,10 +1,18 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { getResources } from '../services/resourceService';
 import ResourceCard from '../components/ResourceCard';
 import { AlertCircle, Filter, Dna, Microscope, Leaf, Bug, Zap, Orbit, Activity, Calculator, PieChart, Binary, TrendingUp, Pencil, BookOpen, Shapes, Backpack, Palette, Smile, Gamepad, Baby, Coins, Building, Banknote, TreeDeciduous, Recycle, Sun, Sprout, HeartHandshake, Users, Heart, Ear, MessageCircle, Mic, Volume2, Monitor, Cpu, Wifi, Bot } from 'lucide-react';
 import '../styles/home.css';
 import '../styles/categories.css';
+
+const PROFESORADOS = [
+    "Biología", "Física", "Matemática", "Primaria", "Inicial", "Economía"
+];
+
+const AREAS_TRANSVERSALES = [
+    "Educación Ambiental", "ESI (Educación Sexual Integral)", "Fonoaudiología", "Tics"
+];
 
 const getCategoryTheme = (category) => {
     switch (category) {
@@ -111,9 +119,46 @@ const Categories = () => {
     return (
         <div className="category-container animate-fade-in">
             {!categoryFilter ? (
-                <div className="alert alert-error mt-10">
-                    <AlertCircle size={16} />
-                    <span>Seleccione una categoría desde el menú principal para comenzar.</span>
+                <div style={{ marginTop: '2rem' }}>
+                    <h2 style={{ textAlign: 'center', marginBottom: '3rem', color: 'var(--primary)', fontSize: '2.5rem' }}>Explorar Áreas</h2>
+
+                    <h3 style={{ marginBottom: '1.5rem', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.5rem', color: 'var(--text-secondary)' }}>Profesorados</h3>
+                    <div className="grid grid-cols-1 md-grid-cols-2 lg-grid-cols-3" style={{ marginBottom: '4rem' }}>
+                        {PROFESORADOS.map(prof => {
+                            const theme = getCategoryTheme(prof);
+                            const FirstIcon = theme.icons[0];
+                            return (
+                                <Link to={`/categorias?tipo=${encodeURIComponent(prof)}`} key={prof} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <div className={`card ${theme.className} category-card-anim`} style={{ height: '100%', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', transition: 'transform 0.2s', padding: '2.5rem 1rem' }}>
+                                        <div style={{ background: 'rgba(255,255,255,0.2)', padding: '1rem', borderRadius: '50%', marginBottom: '1.2rem', display: 'inline-flex' }}>
+                                            <FirstIcon size={48} strokeWidth={2} />
+                                        </div>
+                                        <h3 style={{ margin: '0 0 0.5rem 0', fontWeight: 'bold' }}>{prof}</h3>
+                                        <p style={{ fontSize: '0.875rem', margin: 0, opacity: 0.9 }}>{theme.subtitle}</p>
+                                    </div>
+                                </Link>
+                            )
+                        })}
+                    </div>
+
+                    <h3 style={{ marginBottom: '1.5rem', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.5rem', color: 'var(--text-secondary)' }}>Áreas Transversales</h3>
+                    <div className="grid grid-cols-1 md-grid-cols-2 lg-grid-cols-3">
+                        {AREAS_TRANSVERSALES.map(area => {
+                            const theme = getCategoryTheme(area);
+                            const FirstIcon = theme.icons[0];
+                            return (
+                                <Link to={`/categorias?tipo=${encodeURIComponent(area)}`} key={area} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <div className={`card ${theme.className} category-card-anim`} style={{ height: '100%', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', transition: 'transform 0.2s', padding: '2.5rem 1rem' }}>
+                                        <div style={{ background: 'rgba(255,255,255,0.2)', padding: '1rem', borderRadius: '50%', marginBottom: '1.2rem', display: 'inline-flex' }}>
+                                            <FirstIcon size={48} strokeWidth={2} />
+                                        </div>
+                                        <h3 style={{ margin: '0 0 0.5rem 0', fontWeight: 'bold' }}>{area}</h3>
+                                        <p style={{ fontSize: '0.875rem', margin: 0, opacity: 0.9 }}>{theme.subtitle}</p>
+                                    </div>
+                                </Link>
+                            )
+                        })}
+                    </div>
                 </div>
             ) : (
                 <>
