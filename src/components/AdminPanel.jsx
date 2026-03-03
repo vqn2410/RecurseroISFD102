@@ -12,6 +12,8 @@ const AdminPanel = ({ userData }) => {
     const [resources, setResources] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const isAdmin = !userData || (userData?.rol && ['admin', 'administrador'].includes(userData.rol.toLowerCase()));
+
     const fetchResources = async () => {
         setLoading(true);
         try {
@@ -61,7 +63,7 @@ const AdminPanel = ({ userData }) => {
                     >
                         <PlusCircle size={18} /> Subir
                     </button>
-                    {(userData?.rol === 'administrador' || userData?.rol === 'admin') && (
+                    {isAdmin && (
                         <>
                             <button
                                 className={`btn ${activeTab === 'docentes' ? 'btn-primary' : 'btn-outline'}`}
@@ -140,11 +142,11 @@ const AdminPanel = ({ userData }) => {
                     <UploadForm onUploadSuccess={() => setActiveTab('resources')} />
                 )}
 
-                {activeTab === 'register' && (userData?.rol === 'administrador' || userData?.rol === 'admin') && (
+                {activeTab === 'register' && isAdmin && (
                     <RegisterUser />
                 )}
 
-                {activeTab === 'docentes' && (userData?.rol === 'administrador' || userData?.rol === 'admin') && (
+                {activeTab === 'docentes' && isAdmin && (
                     <DocentesPanel />
                 )}
             </div>
