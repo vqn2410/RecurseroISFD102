@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { db, firebaseConfig } from '../services/firebase';
@@ -22,7 +22,8 @@ const RegisterUser = () => {
 
         try {
             // Create a secondary app instance to register without logging out the admin
-            const secondaryApp = initializeApp(firebaseConfig, 'SecondaryApp');
+            const apps = getApps();
+            const secondaryApp = apps.find(app => app.name === 'SecondaryApp') || initializeApp(firebaseConfig, 'SecondaryApp');
             const secondaryAuth = getAuth(secondaryApp);
 
             // Create user in Firebase Auth
@@ -31,7 +32,7 @@ const RegisterUser = () => {
 
             // Ensure the Admin's session is active and valid to write to Firestore
             // Save user data to Firestore
-            await setDoc(doc(db, 'users', newUser.uid), {
+            await setDoc(doc(db, 'docentes', newUser.uid), {
                 uid: newUser.uid,
                 email: newUser.email,
                 nombreCompleto: fullName,
@@ -43,20 +44,26 @@ const RegisterUser = () => {
             // Sign out the new user from secondary app
             await signOut(secondaryAuth);
 
-            setSuccess(`Docente ${fullName} registrado correctamente. Email: ${email}`);
+            const successMsg = `Docente ${fullName} registrado correctamente. Email: ${email}`;
+            setSuccess(successMsg);
+            alert(successMsg);
+
             setEmail('');
             setFullName('');
             setPassword('');
 
         } catch (err) {
-            console.error(err);
+            console.error("Registration error:", err);
+            let errMsg = 'Ocurrió un error al registrar el docente. Intente nuevamente.';
             if (err.code === 'auth/email-already-in-use') {
-                setError('El email ingresado ya está registrado.');
+                errMsg = 'El email ingresado ya está registrado.';
             } else if (err.code === 'auth/weak-password') {
-                setError('La contraseña debe tener al menos 6 caracteres.');
-            } else {
-                setError('Ocurrió un error al registrar el docente. Intente nuevamente.');
+                errMsg = 'La contraseña debe tener al menos 6 caracteres.';
+            } else if (err.code === 'auth/invalid-email') {
+                errMsg = 'El formato del email no es válido.';
             }
+            setError(errMsg);
+            alert(errMsg);
         } finally {
             setLoading(false);
         }

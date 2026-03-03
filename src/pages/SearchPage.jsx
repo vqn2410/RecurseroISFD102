@@ -19,7 +19,7 @@ const SearchPage = () => {
         // We use onSnapshot to provide REALTIME updates for the search results.
         // We fetch all resources and filter client-side because Firestore doesn't natively support
         // full-text search across multiple fields (title, description, tags) without a 3rd party service.
-        const q = query(collection(db, "resources"), orderBy("createdAt", "desc"));
+        const q = query(collection(db, "recursos"), orderBy("createdAt", "desc"));
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const usersList = [];
             snapshot.forEach((doc) => {

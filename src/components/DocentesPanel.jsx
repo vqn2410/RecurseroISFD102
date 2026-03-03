@@ -18,7 +18,7 @@ const DocentesPanel = () => {
     }, []);
 
     const fetchDocentes = () => {
-        const q = query(collection(db, 'users'), orderBy('fechaCreacion', 'desc'));
+        const q = query(collection(db, 'docentes'), orderBy('fechaCreacion', 'desc'));
 
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const usersList = [];
@@ -51,7 +51,7 @@ const DocentesPanel = () => {
     const handleDeleteUser = async (userRecord) => {
         if (window.confirm(`¿Estás seguro de eliminar el usuario docente de ${userRecord.nombreCompleto || userRecord.email}? (Esto solo lo eliminará de la base de datos visual)`)) {
             try {
-                await deleteDoc(doc(db, 'users', userRecord.id));
+                await deleteDoc(doc(db, 'docentes', userRecord.id));
             } catch (error) {
                 console.error("Error al eliminar usuario:", error);
                 alert("Hubo un error al eliminar el usuario.");
@@ -75,7 +75,7 @@ const DocentesPanel = () => {
         const newRole = (userRecord.rol === 'administrador' || userRecord.rol === 'admin') ? 'docente' : 'administrador';
         if (window.confirm(`¿Cambiar el rol de ${userRecord.nombreCompleto} a ${newRole}?`)) {
             try {
-                await updateDoc(doc(db, 'users', userRecord.id), { rol: newRole });
+                await updateDoc(doc(db, 'docentes', userRecord.id), { rol: newRole });
             } catch (error) {
                 console.error("Error al cambiar rol:", error);
                 alert("Hubo un error al cambiar el rol.");
@@ -87,7 +87,7 @@ const DocentesPanel = () => {
         const newName = window.prompt(`Modificar nombre de ${userRecord.email}:\nIngresa el nuevo nombre completo:`, userRecord.nombreCompleto || '');
         if (newName !== null && newName !== userRecord.nombreCompleto) {
             try {
-                await updateDoc(doc(db, 'users', userRecord.id), { nombreCompleto: newName.trim() });
+                await updateDoc(doc(db, 'docentes', userRecord.id), { nombreCompleto: newName.trim() });
                 // No need for alert as onSnapshot will auto-refresh the UI
             } catch (error) {
                 console.error("Error al actualizar nombre:", error);

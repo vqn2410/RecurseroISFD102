@@ -31,14 +31,14 @@ function App() {
 
       if (currentUser) {
         try {
-          const userDocRef = doc(db, 'users', currentUser.uid);
+          const userDocRef = doc(db, 'docentes', currentUser.uid);
           const userDoc = await getDoc(userDocRef);
           if (userDoc.exists()) {
             const data = userDoc.data();
             setUserData(data);
             setIsFirstLogin(data.firstLogin === true);
           } else {
-            // Auto-provision initial users missing from Firestore 'users'
+            // Auto-provision initial users missing from Firestore 'docentes'
             const emailPart = currentUser.email ? currentUser.email.split('@')[0] : 'Docente';
             const isRootAdmin = currentUser.email === 'nvergara@abc.gob.ar' || currentUser.email === 'recursosoficial102@gmail.com';
 

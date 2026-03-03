@@ -23,7 +23,7 @@ const Navbar = ({ user }) => {
         try {
             if (user) {
                 // Actualizar DB sin bloquear (Fire-and-forget), por si la red falla no nos estanque el logout
-                updateDoc(doc(db, 'users', user.uid), { onlineStatus: false }).catch(err => {
+                updateDoc(doc(db, 'docentes', user.uid), { onlineStatus: false }).catch(err => {
                     console.warn("Could not update online status immediately:", err);
                 });
             }

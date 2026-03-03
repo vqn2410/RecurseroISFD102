@@ -3,7 +3,7 @@ import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage
 import { db, storage } from "./firebase";
 
 // References
-const resourcesCollection = collection(db, "resources");
+const resourcesCollection = collection(db, "recursos");
 
 // Create
 export const createResource = async (resourceData, file) => {
@@ -61,7 +61,7 @@ export const getResources = async (categoryFilter = null) => {
 // Update
 export const updateResource = async (id, updatedData, newFile = null) => {
     try {
-        const resourceRef = doc(db, "resources", id);
+        const resourceRef = doc(db, "recursos", id);
         let finalData = { ...updatedData };
 
         if (newFile) {
@@ -98,7 +98,7 @@ export const deleteResource = async (id, fileUrl) => {
             }
         }
 
-        await deleteDoc(doc(db, "resources", id));
+        await deleteDoc(doc(db, "recursos", id));
     } catch (error) {
         console.error("Error deleting resource: ", error);
         throw error;

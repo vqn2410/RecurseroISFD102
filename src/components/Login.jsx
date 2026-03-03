@@ -23,7 +23,7 @@ const Login = () => {
             const user = userCredential.user;
 
             // Check firstLogin in Firestore
-            const userDocRef = doc(db, 'users', user.uid);
+            const userDocRef = doc(db, 'docentes', user.uid);
             const userDoc = await getDoc(userDocRef);
 
             if (userDoc.exists()) {
