@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getResources } from '../services/resourceService';
+import { Link } from 'react-router-dom';
 import ResourceCard from '../components/ResourceCard';
 import { Layers, Search } from 'lucide-react';
 import '../styles/home.css';
@@ -32,9 +33,9 @@ const Home = () => {
                         en las diferentes disciplinas y áreas transversales.
                     </p>
                     <div className="hero-actions">
-                        <a href="/categorias?tipo=Biología" className="btn btn-primary">
+                        <Link to="/categorias?tipo=Biolog%C3%ADa" className="btn btn-primary">
                             <Layers size={18} /> Explorar Áreas
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </section>
