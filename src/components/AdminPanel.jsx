@@ -61,7 +61,7 @@ const AdminPanel = ({ userData }) => {
                     >
                         <PlusCircle size={18} /> Subir
                     </button>
-                    {userData?.rol === 'administrador' && (
+                    {(userData?.rol === 'administrador' || userData?.rol === 'admin') && (
                         <>
                             <button
                                 className={`btn ${activeTab === 'docentes' ? 'btn-primary' : 'btn-outline'}`}
@@ -140,11 +140,11 @@ const AdminPanel = ({ userData }) => {
                     <UploadForm onUploadSuccess={() => setActiveTab('resources')} />
                 )}
 
-                {activeTab === 'register' && userData?.rol === 'administrador' && (
+                {activeTab === 'register' && (userData?.rol === 'administrador' || userData?.rol === 'admin') && (
                     <RegisterUser />
                 )}
 
-                {activeTab === 'docentes' && userData?.rol === 'administrador' && (
+                {activeTab === 'docentes' && (userData?.rol === 'administrador' || userData?.rol === 'admin') && (
                     <DocentesPanel />
                 )}
             </div>

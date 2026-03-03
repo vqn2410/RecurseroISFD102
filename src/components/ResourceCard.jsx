@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { FileText, File, Image as ImageIcon, Video, Link as LinkIcon, ExternalLink, Calendar } from 'lucide-react';
 import '../styles/resource-card.css';
 
@@ -104,4 +105,4 @@ const ResourceCard = ({ resource }) => {
     );
 };
 
-export default ResourceCard;
+export default memo(ResourceCard);

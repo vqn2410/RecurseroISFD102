@@ -6,8 +6,9 @@ import { auth, db, isFirebaseConfigured } from './services/firebase';
 
 import Navbar from './components/Navbar';
 
+import Home from './pages/Home';
+
 // Lazy loading components optimization
-const Home = lazy(() => import('./pages/Home'));
 const Categories = lazy(() => import('./pages/Categories'));
 const SearchPage = lazy(() => import('./pages/SearchPage'));
 const Login = lazy(() => import('./components/Login'));
@@ -17,12 +18,11 @@ const ChangePassword = lazy(() => import('./components/ChangePassword'));
 function App() {
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!isFirebaseConfigured || !auth ? false : true);
   const [isFirstLogin, setIsFirstLogin] = useState(false);
 
   useEffect(() => {
     if (!isFirebaseConfigured || !auth) {
-      setLoading(false);
       return;
     }
 

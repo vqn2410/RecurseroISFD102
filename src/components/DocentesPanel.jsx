@@ -65,7 +65,7 @@ const DocentesPanel = () => {
     };
 
     const handleToggleRole = async (userRecord) => {
-        const newRole = userRecord.rol === 'administrador' ? 'docente' : 'administrador';
+        const newRole = (userRecord.rol === 'administrador' || userRecord.rol === 'admin') ? 'docente' : 'administrador';
         if (window.confirm(`¿Cambiar el rol de ${userRecord.nombreCompleto} a ${newRole}?`)) {
             try {
                 await updateDoc(doc(db, 'users', userRecord.id), { rol: newRole });
@@ -182,7 +182,7 @@ const DocentesPanel = () => {
                                         </div>
                                     </td>
                                     <td>
-                                        {docente.rol === 'administrador' ? (
+                                        {(docente.rol === 'administrador' || docente.rol === 'admin') ? (
                                             <span className="badge" style={{ backgroundColor: 'rgba(79, 70, 229, 0.1)', color: 'var(--primary)' }}>
                                                 <ShieldCheck size={12} style={{ marginRight: '4px' }} /> {docente.rol}
                                             </span>
