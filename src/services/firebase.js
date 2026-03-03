@@ -1,33 +1,35 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
-export const firebaseConfig = {
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-    appId: import.meta.env.VITE_FIREBASE_APP_ID,
-    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+// Web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyDFReqCqEqbXCVmHWc5nX4wVyPCkYUV-gM",
+    authDomain: "recursero-470d1.firebaseapp.com",
+    projectId: "recursero-470d1",
+    storageBucket: "recursero-470d1.firebasestorage.app",
+    messagingSenderId: "411275061691",
+    appId: "1:411275061691:web:67a7367c84a5b21cb87c9e",
+    measurementId: "G-D7VZZKEB1Z"
 };
 
-// Debug helper para Vercel (aviso en consola si faltan variables)
 export const isFirebaseConfigured = !!firebaseConfig.apiKey;
 
 let app;
 try {
     if (isFirebaseConfigured) {
-        app = initializeApp(firebaseConfig);
+        // Only initialize if no apps are initialized yet
+        app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
     } else {
-        console.error("⚠️ ERROR CRÍTICO: La API Key de Firebase está vacía. Faltan variables de entorno.");
+        console.error("⚠️ ERROR CRÍTICO: La API Key de Firebase está vacía.");
     }
 } catch (error) {
     console.error("Error inicializando Firebase:", error);
 }
 
+// Export Firebase instances
 export const auth = app ? getAuth(app) : null;
 export const db = app ? getFirestore(app) : null;
 export const storage = app ? getStorage(app) : null;
