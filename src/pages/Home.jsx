@@ -33,7 +33,7 @@ const Home = () => {
                         en las diferentes disciplinas y áreas transversales.
                     </p>
                     <div className="hero-actions">
-                        <Link to="/categorias?tipo=Biolog%C3%ADa" className="btn btn-primary">
+                        <Link to="/categorias" className="btn btn-primary">
                             <Layers size={18} /> Explorar Áreas
                         </Link>
                     </div>
