@@ -67,7 +67,7 @@ const AdminPanel = ({ userData }) => {
                                 className={`btn ${activeTab === 'docentes' ? 'btn-primary' : 'btn-outline'}`}
                                 onClick={() => setActiveTab('docentes')}
                             >
-                                <Users size={18} /> Ver Docentes
+                                <Users size={18} /> Base de Datos
                             </button>
                             <button
                                 className={`btn ${activeTab === 'register' ? 'btn-primary' : 'btn-outline'}`}
