@@ -2,13 +2,20 @@ import { useState, useEffect } from 'react';
 import { collection, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { db, auth } from '../services/firebase';
-import { Search, RefreshCw, Users, Mail, Clock, ShieldCheck, Shield, Edit, Trash2, Key } from 'lucide-react';
+import { Search, RefreshCw, Users, Mail, Clock, ShieldCheck, Shield, Edit, Trash2, Key, MoreVertical } from 'lucide-react';
 
 const DocentesPanel = () => {
     const [docentes, setDocentes] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    const [openDropdownId, setOpenDropdownId] = useState(null);
+
+    useEffect(() => {
+        const handleClickOutside = () => setOpenDropdownId(null);
+        window.addEventListener('click', handleClickOutside);
+        return () => window.removeEventListener('click', handleClickOutside);
+    }, []);
 
     const fetchDocentes = () => {
         const q = query(collection(db, 'users'), orderBy('fechaCreacion', 'desc'));
@@ -205,19 +212,34 @@ const DocentesPanel = () => {
                                             <span className="badge" style={{ backgroundColor: 'rgba(16, 185, 129, 0.1)', color: 'var(--secondary)' }}>Completado</span>
                                         )}
                                     </td>
-                                    <td className="actions-cell">
-                                        <button className="btn-icon" onClick={() => handleEditName(docente)} title="Editar Nombre">
-                                            <Edit size={16} />
+                                    <td className="actions-cell" style={{ position: 'relative' }}>
+                                        <button
+                                            className="btn-icon"
+                                            title="Opciones"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setOpenDropdownId(openDropdownId === docente.id ? null : docente.id);
+                                            }}
+                                        >
+                                            <MoreVertical size={18} />
                                         </button>
-                                        <button className="btn-icon" onClick={() => handleToggleRole(docente)} title="Cambiar Rol (Admin/Docente)">
-                                            <Shield size={16} />
-                                        </button>
-                                        <button className="btn-icon text-secondary" style={{ cursor: 'pointer' }} onClick={() => handleResetPassword(docente.email)} title="Restablecer Contraseña">
-                                            <Key size={16} />
-                                        </button>
-                                        <button className="btn-icon text-error hover-bg-red" onClick={() => handleDeleteUser(docente)} title="Eliminar Docente">
-                                            <Trash2 size={16} />
-                                        </button>
+
+                                        {openDropdownId === docente.id && (
+                                            <div className="dropdown-menu animate-fade-in" onClick={(e) => e.stopPropagation()}>
+                                                <button className="dropdown-item" onClick={() => { handleEditName(docente); setOpenDropdownId(null); }}>
+                                                    <Edit size={16} /> Editar Nombre
+                                                </button>
+                                                <button className="dropdown-item" onClick={() => { handleToggleRole(docente); setOpenDropdownId(null); }}>
+                                                    <Shield size={16} /> Cambiar Rol
+                                                </button>
+                                                <button className="dropdown-item" onClick={() => { handleResetPassword(docente.email); setOpenDropdownId(null); }}>
+                                                    <Key size={16} /> Restablecer Clave
+                                                </button>
+                                                <button className="dropdown-item text-error" onClick={() => { handleDeleteUser(docente); setOpenDropdownId(null); }}>
+                                                    <Trash2 size={16} /> Eliminar Docente
+                                                </button>
+                                            </div>
+                                        )}
                                     </td>
                                 </tr>
                             ))}
