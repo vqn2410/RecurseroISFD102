@@ -49,7 +49,7 @@ const ChangePassword = () => {
             await updatePassword(user, newPassword);
 
             // Update firstLogin field in Firestore
-            const userDocRef = doc(db, 'users', user.uid);
+            const userDocRef = doc(db, 'docentes', user.uid);
             await updateDoc(userDocRef, { firstLogin: false });
 
             setSuccess(true);
