@@ -76,6 +76,19 @@ const DocentesPanel = () => {
         }
     };
 
+    const handleEditName = async (userRecord) => {
+        const newName = window.prompt(`Modificar nombre de ${userRecord.email}:\nIngresa el nuevo nombre completo:`, userRecord.nombreCompleto || '');
+        if (newName !== null && newName !== userRecord.nombreCompleto) {
+            try {
+                await updateDoc(doc(db, 'users', userRecord.id), { nombreCompleto: newName.trim() });
+                // No need for alert as onSnapshot will auto-refresh the UI
+            } catch (error) {
+                console.error("Error al actualizar nombre:", error);
+                alert("Hubo un error al actualizar el nombre del usuario.");
+            }
+        }
+    };
+
     const filteredDocentes = docentes.filter(docente => {
         const nameMatch = docente.nombreCompleto?.toLowerCase().includes(searchTerm.toLowerCase());
         const emailMatch = docente.email?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -193,8 +206,11 @@ const DocentesPanel = () => {
                                         )}
                                     </td>
                                     <td className="actions-cell">
-                                        <button className="btn-icon" onClick={() => handleToggleRole(docente)} title="Cambiar Rol">
+                                        <button className="btn-icon" onClick={() => handleEditName(docente)} title="Editar Nombre">
                                             <Edit size={16} />
+                                        </button>
+                                        <button className="btn-icon" onClick={() => handleToggleRole(docente)} title="Cambiar Rol (Admin/Docente)">
+                                            <Shield size={16} />
                                         </button>
                                         <button className="btn-icon text-secondary" style={{ cursor: 'pointer' }} onClick={() => handleResetPassword(docente.email)} title="Restablecer Contraseña">
                                             <Key size={16} />
