@@ -12,7 +12,7 @@ const AREAS_TRANSVERSALES = [
     "Educación Ambiental", "ESI (Educación Sexual Integral)", "Fonoaudiología", "Tics"
 ];
 
-const UploadForm = ({ onUploadSuccess }) => {
+const UploadForm = ({ onUploadSuccess, userData }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [categories, setCategories] = useState([]);
@@ -58,7 +58,7 @@ const UploadForm = ({ onUploadSuccess }) => {
                 tags: tagsArray,
                 fileUrl: linkUrl,
                 createdBy: auth.currentUser ? auth.currentUser.uid : null,
-                subidoPor: auth.currentUser ? (auth.currentUser.displayName || (auth.currentUser.email ? auth.currentUser.email.split('@')[0] : 'Docente')) : 'Docente'
+                subidoPor: userData?.nombreCompleto || (auth.currentUser ? (auth.currentUser.displayName || (auth.currentUser.email ? auth.currentUser.email.split('@')[0] : 'Docente')) : 'Docente')
             };
 
             await createResource(resourceData, fileObject);

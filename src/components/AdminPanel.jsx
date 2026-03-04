@@ -143,7 +143,7 @@ const AdminPanel = ({ userData }) => {
                 )}
 
                 {activeTab === 'upload' && (
-                    <UploadForm onUploadSuccess={() => setActiveTab('resources')} />
+                    <UploadForm onUploadSuccess={() => setActiveTab('resources')} userData={userData} />
                 )}
 
                 {activeTab === 'register' && isAdmin && (
