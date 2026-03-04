@@ -57,7 +57,8 @@ const UploadForm = ({ onUploadSuccess }) => {
                 categories,
                 tags: tagsArray,
                 fileUrl: linkUrl,
-                createdBy: auth.currentUser ? auth.currentUser.uid : null
+                createdBy: auth.currentUser ? auth.currentUser.uid : null,
+                subidoPor: auth.currentUser ? (auth.currentUser.displayName || (auth.currentUser.email ? auth.currentUser.email.split('@')[0] : 'Docente')) : 'Docente'
             };
 
             await createResource(resourceData, fileObject);

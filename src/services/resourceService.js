@@ -20,6 +20,7 @@ export const createResource = async (resourceData, file) => {
             ...resourceData,
             fileUrl: resourceData.type !== "enlace" ? fileUrl : resourceData.fileUrl,
             createdAt: serverTimestamp(),
+            fechaSubida: serverTimestamp(),
         });
 
         return docRef.id;

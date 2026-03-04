@@ -58,6 +58,11 @@ const ResourceCard = ({ resource }) => {
 
             <div className="card-body">
                 <h3 className="card-title">{title}</h3>
+                {(resource.subidoPor || resource.fechaSubida || resource.createdAt) && (
+                    <p className="text-secondary" style={{ fontSize: '0.85rem', marginBottom: '0.5rem', fontStyle: 'italic' }}>
+                        Subido por {resource.subidoPor || 'Docente'} el {formatDate(resource.fechaSubida || resource.createdAt)}
+                    </p>
+                )}
                 <p className="card-description">{description}</p>
 
                 {tags && tags.length > 0 && (
