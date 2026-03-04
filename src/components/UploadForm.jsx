@@ -15,10 +15,9 @@ const AREAS_TRANSVERSALES = [
 const UploadForm = ({ onUploadSuccess }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [type, setType] = useState('adjunto'); // adjunto, enlace
     const [categories, setCategories] = useState([]);
     const [tags, setTags] = useState('');
-    const [fileOrUrl, setFileOrUrl] = useState(''); // holds url text or file
+    const [linkUrl, setLinkUrl] = useState(''); // holds url text
     const [fileObject, setFileObject] = useState(null); // holds File object
 
     const [loading, setLoading] = useState(false);
@@ -43,28 +42,21 @@ const UploadForm = ({ onUploadSuccess }) => {
         try {
             const tagsArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
 
-            const isFileRequired = type === 'adjunto' && !fileOrUrl;
-            const isUrlRequired = type === 'enlace' && !fileOrUrl;
-
-            if (isFileRequired && !fileObject) {
-                setError("Debe seleccionar un archivo para subir.");
+            if (!fileObject && !linkUrl) {
+                setError("Debe proporcionar un Archivo o un Enlace válido.");
                 setLoading(false);
                 return;
             }
 
-            if (isUrlRequired && !fileOrUrl) {
-                setError("Debe proveer una URL/Enlace válido.");
-                setLoading(false);
-                return;
-            }
+            const computedType = fileObject ? 'adjunto' : 'enlace';
 
             const resourceData = {
                 title,
                 description,
-                type,
+                type: computedType,
                 categories,
                 tags: tagsArray,
-                fileUrl: type === 'enlace' ? fileOrUrl : '',
+                fileUrl: linkUrl,
                 createdBy: auth.currentUser ? auth.currentUser.uid : null
             };
 
@@ -76,11 +68,12 @@ const UploadForm = ({ onUploadSuccess }) => {
             // Reset
             setTitle('');
             setDescription('');
-            setType('adjunto');
             setCategories([]);
             setTags('');
-            setFileOrUrl('');
+            setLinkUrl('');
             setFileObject(null);
+            const fileInput = document.getElementById('fileUpload');
+            if (fileInput) fileInput.value = '';
 
         } catch (err) {
             console.error(err);
@@ -144,25 +137,7 @@ const UploadForm = ({ onUploadSuccess }) => {
                     />
                 </div>
 
-                <div className="grid grid-cols-2">
-                    <div className="form-group">
-                        <label className="form-label" htmlFor="type">Tipo de Recurso</label>
-                        <select
-                            id="type"
-                            className="form-select"
-                            value={type}
-                            onChange={(e) => {
-                                setType(e.target.value);
-                                setFileObject(null);
-                                setFileOrUrl('');
-                            }}
-                            required
-                        >
-                            <option value="adjunto">Archivo Adjunto (PDF, Imagen, Video...)</option>
-                            <option value="enlace">Enlace Externo (YouTube, Drive...)</option>
-                        </select>
-                    </div>
-                </div>
+
 
                 <div className="form-group">
                     <label className="form-label">Secciones / Destinos (Puede seleccionar varios)</label>
@@ -214,32 +189,30 @@ const UploadForm = ({ onUploadSuccess }) => {
                     />
                 </div>
 
-                <div className="form-group">
-                    {type === 'enlace' ? (
-                        <>
-                            <label className="form-label" htmlFor="urlLink">Enlace (URL)</label>
-                            <input
-                                id="urlLink"
-                                type="url"
-                                className="form-input"
-                                value={fileOrUrl}
-                                onChange={(e) => setFileOrUrl(e.target.value)}
-                                required
-                                placeholder="https://..."
-                            />
-                        </>
-                    ) : (
-                        <>
-                            <label className="form-label" htmlFor="fileUpload">Archivo</label>
-                            <input
-                                id="fileUpload"
-                                type="file"
-                                className="form-input"
-                                onChange={handleFileChange}
-                                required
-                            />
-                        </>
-                    )}
+                <div className="form-group" style={{ border: '2px dashed #ddd', padding: '15px', borderRadius: '8px', marginBottom: '15px' }}>
+                    <label className="form-label" style={{ fontWeight: 'bold' }}>Opción 1: Subir un Archivo</label>
+                    <p className="text-secondary" style={{ fontSize: '0.85rem', marginBottom: '10px' }}>PDF, Word, Imágenes, etc.</p>
+                    <input
+                        id="fileUpload"
+                        type="file"
+                        className="form-input"
+                        onChange={handleFileChange}
+                    />
+                </div>
+
+                <div className="text-center" style={{ margin: '10px 0', fontWeight: 'bold', color: '#666' }}>O</div>
+
+                <div className="form-group" style={{ border: '2px dashed #ddd', padding: '15px', borderRadius: '8px' }}>
+                    <label className="form-label" style={{ fontWeight: 'bold' }} htmlFor="urlLink">Opción 2: Enlace Externo</label>
+                    <p className="text-secondary" style={{ fontSize: '0.85rem', marginBottom: '10px' }}>Link a YouTube, Drive, páginas web, etc.</p>
+                    <input
+                        id="urlLink"
+                        type="url"
+                        className="form-input"
+                        value={linkUrl}
+                        onChange={(e) => setLinkUrl(e.target.value)}
+                        placeholder="https://..."
+                    />
                 </div>
 
                 <button type="submit" className="btn btn-primary w-full mt-3" disabled={loading}>
