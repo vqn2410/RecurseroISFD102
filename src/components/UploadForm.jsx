@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { createResource } from '../services/resourceService';
+import { auth } from '../services/firebase';
 import { Upload, X, AlertCircle, CheckCircle2 } from 'lucide-react';
 import '../styles/auth.css';
 
@@ -63,7 +64,8 @@ const UploadForm = ({ onUploadSuccess }) => {
                 type,
                 categories,
                 tags: tagsArray,
-                fileUrl: type === 'enlace' ? fileOrUrl : ''
+                fileUrl: type === 'enlace' ? fileOrUrl : '',
+                createdBy: auth.currentUser ? auth.currentUser.uid : null
             };
 
             await createResource(resourceData, fileObject);

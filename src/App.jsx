@@ -102,7 +102,7 @@ function App() {
   return (
     <Router>
       <div className="app-container">
-        <Navbar user={user} />
+        <Navbar user={user} userData={userData} />
         <main className="main-content">
           <Suspense fallback={<div className="loading-state text-center py-10"><p className="text-secondary">Cargando...</p></div>}>
             <Routes>

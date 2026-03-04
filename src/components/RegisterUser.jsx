@@ -10,6 +10,7 @@ const RegisterUser = () => {
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
     const [password, setPassword] = useState('');
+    const [isAdminSelected, setIsAdminSelected] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [loading, setLoading] = useState(false);
@@ -36,7 +37,7 @@ const RegisterUser = () => {
                 uid: newUser.uid,
                 email: newUser.email,
                 nombreCompleto: fullName,
-                rol: 'docente',
+                rol: isAdminSelected ? 'admin' : 'docente',
                 firstLogin: true,
                 fechaCreacion: serverTimestamp()
             });
@@ -44,13 +45,14 @@ const RegisterUser = () => {
             // Sign out the new user from secondary app
             await signOut(secondaryAuth);
 
-            const successMsg = `Docente ${fullName} registrado correctamente. Email: ${email}`;
+            const successMsg = `Usuario ${fullName} registrado correctamente como ${isAdminSelected ? 'Administrador' : 'Docente'}. Email: ${email}`;
             setSuccess(successMsg);
             alert(successMsg);
 
             setEmail('');
             setFullName('');
             setPassword('');
+            setIsAdminSelected(false);
 
         } catch (err) {
             console.error("Registration error:", err);
@@ -74,8 +76,8 @@ const RegisterUser = () => {
     return (
         <div className="card animate-fade-in" style={{ maxWidth: '500px', margin: '0 auto' }}>
             <div className="form-header">
-                <h2>Registrar Nuevo Docente</h2>
-                <p className="text-secondary">Cree una cuenta para que un docente pueda subir recursos.</p>
+                <h2>Registrar Nuevo Usuario</h2>
+                <p className="text-secondary">Cree una cuenta para un nuevo docente o administrador.</p>
             </div>
 
             {error && (
@@ -140,8 +142,22 @@ const RegisterUser = () => {
                         />
                     </div>
                     <p className="password-hint">
-                        El docente deberá cambiar esta contraseña en su primer ingreso.
+                        El usuario deberá cambiar esta contraseña en su primer ingreso.
                     </p>
+                </div>
+
+                <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '1rem' }}>
+                    <input
+                        type="checkbox"
+                        id="isAdmin"
+                        checked={isAdminSelected}
+                        onChange={(e) => setIsAdminSelected(e.target.checked)}
+                        className="form-checkbox"
+                        style={{ cursor: 'pointer' }}
+                    />
+                    <label htmlFor="isAdmin" style={{ cursor: 'pointer', fontWeight: '500' }}>
+                        Asignar rol de Administrador
+                    </label>
                 </div>
 
                 <button type="submit" className="btn btn-primary w-full mt-3" disabled={loading}>

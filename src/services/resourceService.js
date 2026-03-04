@@ -30,12 +30,14 @@ export const createResource = async (resourceData, file) => {
 };
 
 // Read specific limit or filters
-export const getResources = async (categoryFilter = null) => {
+export const getResources = async (categoryFilter = null, userId = null) => {
     try {
         let q;
         if (categoryFilter) {
             // First fetch by categories
             q = query(resourcesCollection, where("categories", "array-contains", categoryFilter));
+        } else if (userId) {
+            q = query(resourcesCollection, where("createdBy", "==", userId));
         } else {
             q = query(resourcesCollection, orderBy("createdAt", "desc"));
         }
@@ -46,8 +48,8 @@ export const getResources = async (categoryFilter = null) => {
             resources.push({ id: doc.id, ...doc.data() });
         });
 
-        // Manual sorting if we used array-contains (because orderBy requires composite index)
-        if (categoryFilter) {
+        // Manual sorting if we used array-contains or where (because orderBy requires composite index)
+        if (categoryFilter || userId) {
             resources.sort((a, b) => b.createdAt?.toMillis() - a.createdAt?.toMillis());
         }
 

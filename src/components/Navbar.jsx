@@ -14,10 +14,12 @@ const AREAS_TRANSVERSALES = [
     "Educación Ambiental", "ESI (Educación Sexual Integral)", "Fonoaudiología", "Tics"
 ];
 
-const Navbar = ({ user }) => {
+const Navbar = ({ user, userData }) => {
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+
+    const isAdmin = !userData || (userData?.rol && ['admin', 'administrador'].includes(userData.rol.toLowerCase()));
 
     const handleLogout = async () => {
         try {
@@ -96,7 +98,7 @@ const Navbar = ({ user }) => {
                         {user ? (
                             <>
                                 <Link to="/admin" className="btn btn-outline" onClick={closeMenu}>
-                                    Panel Admin
+                                    {isAdmin ? 'Panel Admin' : 'Mis Recursos'}
                                 </Link>
                                 <button onClick={handleLogout} className="btn btn-danger">
                                     <LogOut size={16} /> Salir
@@ -156,7 +158,7 @@ const Navbar = ({ user }) => {
                         {user ? (
                             <>
                                 <Link to="/admin" className="btn btn-outline w-full justify-center mb-2" onClick={closeMenu}>
-                                    Panel Admin
+                                    {isAdmin ? 'Panel Admin' : 'Mis Recursos'}
                                 </Link>
                                 <button onClick={handleLogout} className="btn btn-danger w-full justify-center">
                                     <LogOut size={16} /> Salir

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getResources, deleteResource } from '../services/resourceService';
+import { auth } from '../services/firebase';
 import UploadForm from './UploadForm';
 import RegisterUser from './RegisterUser';
 import DocentesPanel from './DocentesPanel';
@@ -17,7 +18,8 @@ const AdminPanel = ({ userData }) => {
     const fetchResources = async () => {
         setLoading(true);
         try {
-            const data = await getResources();
+            const filterUserId = isAdmin ? null : auth.currentUser?.uid;
+            const data = await getResources(null, filterUserId);
             setResources(data);
         } catch (error) {
             console.error("Failed to fetch resources:", error);
@@ -47,8 +49,10 @@ const AdminPanel = ({ userData }) => {
         <div className="admin-container animate-fade-in">
             <div className="admin-header">
                 <div>
-                    <h1 style={{ margin: 0 }}>Panel de Administración</h1>
-                    <p className="text-secondary" style={{ margin: 0 }}>Gestión de recursos y usuarios docentes</p>
+                    <h1 style={{ margin: 0 }}>{isAdmin ? 'Panel de Administración' : 'Mis Recursos'}</h1>
+                    <p className="text-secondary" style={{ margin: 0 }}>
+                        {isAdmin ? 'Gestión de recursos y usuarios' : 'Gestión de sus recursos subidos'}
+                    </p>
                 </div>
                 <div className="admin-tabs">
                     <button
