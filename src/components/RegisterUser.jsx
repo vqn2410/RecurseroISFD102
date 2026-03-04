@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { initializeApp, getApps } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, setDoc, serverTimestamp, getFirestore } from 'firebase/firestore';
 import { db, firebaseConfig } from '../services/firebase';
 import { UserPlus, Mail, User, AlertCircle, CheckCircle2 } from 'lucide-react';
 import '../styles/auth.css';
@@ -25,14 +25,15 @@ const RegisterUser = () => {
             const apps = getApps();
             const secondaryApp = apps.find(app => app.name === 'SecondaryApp') || initializeApp(firebaseConfig, 'SecondaryApp');
             const secondaryAuth = getAuth(secondaryApp);
+            const secondaryDb = getFirestore(secondaryApp);
 
             // Create user in Firebase Auth
             const userCredential = await createUserWithEmailAndPassword(secondaryAuth, email, password);
             const newUser = userCredential.user;
 
             // Ensure the Admin's session is active and valid to write to Firestore
-            // Save user data to Firestore
-            await setDoc(doc(db, 'docentes', newUser.uid), {
+            // Save user data to Firestore using secondaryDb so it uses the new user's credentials
+            await setDoc(doc(secondaryDb, 'docentes', newUser.uid), {
                 uid: newUser.uid,
                 email: newUser.email,
                 nombreCompleto: fullName,
