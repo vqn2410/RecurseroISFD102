@@ -11,6 +11,7 @@ import Home from './pages/Home';
 // Lazy loading components optimization
 const Categories = lazy(() => import('./pages/Categories'));
 const SearchPage = lazy(() => import('./pages/SearchPage'));
+const SobreEnsam = lazy(() => import('./pages/SobreEnsam'));
 const Login = lazy(() => import('./components/Login'));
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
 const ChangePassword = lazy(() => import('./components/ChangePassword'));
@@ -109,6 +110,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/categorias" element={<Categories />} />
               <Route path="/buscar" element={<SearchPage />} />
+              <Route path="/sobre-ensam" element={<SobreEnsam />} />
               <Route path="/login" element={!user ? <Login /> : <Navigate to={isFirstLogin ? "/cambiar-password" : "/admin"} replace />} />
               <Route path="/cambiar-password" element={user && isFirstLogin ? <ChangePassword /> : <Navigate to={user ? "/admin" : "/login"} replace />} />
               <Route path="/admin" element={adminElement} />

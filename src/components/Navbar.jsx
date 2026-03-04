@@ -72,6 +72,10 @@ const Navbar = ({ user, userData }) => {
 
                 {/* Desktop Menu */}
                 <div className="navbar-menu-desktop">
+                    <Link to="/sobre-ensam" className="dropdown-btn" style={{ textDecoration: 'none' }} onClick={closeMenu}>
+                        Sobre el ENSAM
+                    </Link>
+
                     <div className="dropdown">
                         <button className="dropdown-btn">Profesorados</button>
                         <div className="dropdown-content">
@@ -134,6 +138,12 @@ const Navbar = ({ user, userData }) => {
                                 />
                             </div>
                         </form>
+                    </div>
+
+                    <div className="mobile-section">
+                        <Link to="/sobre-ensam" className="mobile-section-title" style={{ display: 'block', textDecoration: 'none', marginBottom: '1rem', color: 'var(--primary)' }} onClick={closeMenu}>
+                            Sobre el ENSAM
+                        </Link>
                     </div>
 
                     <div className="mobile-section">
