@@ -1,21 +1,23 @@
 import { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth, db } from '../services/firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Mail, AlertCircle } from 'lucide-react';
+import { Lock, Mail, AlertCircle, CheckCircle2 } from 'lucide-react';
 import '../styles/auth.css';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [resetMsg, setResetMsg] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
         setError('');
+        setResetMsg('');
         setLoading(true);
 
         try {
@@ -53,6 +55,35 @@ const Login = () => {
         }
     };
 
+    const handleResetPassword = async () => {
+        setError('');
+        setResetMsg('');
+
+        const emailToReset = email.trim() || window.prompt('Por favor, ingresa tu correo electrónico:');
+
+        if (!emailToReset || emailToReset.trim() === '') {
+            setError('Debes ingresar un correo electrónico válido para restablecer tu contraseña.');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            await sendPasswordResetEmail(auth, emailToReset.trim());
+            setResetMsg('Se ha enviado un correo para restablecer tu contraseña.');
+        } catch (err) {
+            console.error(err);
+            if (err.code === 'auth/invalid-email') {
+                setError('El formato del correo electrónico no es válido.');
+            } else if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-user-token' || err.code === 'auth/invalid-credential') {
+                setError('No existe ninguna cuenta registrada con ese correo.');
+            } else {
+                setError('Ocurrió un error al enviar el correo de restablecimiento. Inténtalo de nuevo.');
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="auth-container animate-fade-in">
             <div className="card form-card">
@@ -65,6 +96,13 @@ const Login = () => {
                     <div className="alert alert-error">
                         <AlertCircle size={16} />
                         <span>{error}</span>
+                    </div>
+                )}
+
+                {resetMsg && (
+                    <div className="alert alert-success">
+                        <CheckCircle2 size={16} />
+                        <span>{resetMsg}</span>
                     </div>
                 )}
 
@@ -99,6 +137,17 @@ const Login = () => {
                                 placeholder="••••••••"
                             />
                         </div>
+                    </div>
+
+                    <div style={{ textAlign: 'right', marginBottom: '1rem' }}>
+                        <button
+                            type="button"
+                            onClick={handleResetPassword}
+                            style={{ background: 'none', border: 'none', color: '#2563eb', fontSize: '0.875rem', cursor: 'pointer', padding: 0 }}
+                            disabled={loading}
+                        >
+                            ¿Olvidé mi contraseña?
+                        </button>
                     </div>
 
                     <button type="submit" className="btn btn-primary w-full" disabled={loading}>
