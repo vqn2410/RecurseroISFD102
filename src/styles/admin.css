@@ -8,6 +8,27 @@
     gap: 0.5rem;
     overflow-x: auto;
     padding-bottom: 0.5rem;
+    width: 100%;
+    flex-direction: column;
+}
+
+.admin-tabs .btn {
+    flex-shrink: 0;
+    width: 100%;
+    justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .admin-tabs {
+        flex-direction: row;
+        width: auto;
+    }
+    
+    .admin-tabs .btn {
+        width: auto;
+        white-space: nowrap;
+        justify-content: center;
+    }
 }
 
 .admin-content {

@@ -16,24 +16,24 @@ const AdminPanel = ({ userData }) => {
 
     const isAdmin = !userData || (userData?.rol && ['admin', 'administrador'].includes(userData.rol.toLowerCase()));
 
-    const fetchResources = async () => {
-        setLoading(true);
-        try {
-            const filterUserId = isAdmin ? null : auth.currentUser?.uid;
-            const data = await getResources(null, filterUserId);
-            setResources(data);
-        } catch (error) {
-            console.error("Failed to fetch resources:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
+        const fetchResources = async () => {
+            setLoading(true);
+            try {
+                const filterUserId = isAdmin ? null : auth.currentUser?.uid;
+                const data = await getResources(null, filterUserId);
+                setResources(data);
+            } catch (error) {
+                console.error("Failed to fetch resources:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         if (activeTab === 'resources') {
             fetchResources();
         }
-    }, [activeTab]);
+    }, [activeTab, isAdmin]);
 
     const handleDelete = async (resource) => {
         if (window.confirm(`¿Estás seguro de eliminar el recurso "${resource.title}"?`)) {
