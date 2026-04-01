@@ -1,0 +1,26 @@
+rules_version = '2';
+
+// Craft rules based on data in your Firestore database
+// service firebase.storage {
+//   match /b/{bucket}/o {
+//     match /{allPaths=**} {
+//       allow read, write: if request.auth != null;
+//     }
+//   }
+// }
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Regla para Imágenes y Archivos de Recursos: Lectura pública, escritura solo para docentes logueados
+    match /resources/{resourceId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // Todas las demás rutas: Solo acceso autenticado
+    match /{allPaths=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

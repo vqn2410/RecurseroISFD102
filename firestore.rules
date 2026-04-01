@@ -1,0 +1,28 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Regla para Recursos: Lectura pública, escritura solo para docentes logueados
+    match /recursos/{resourceId} {
+      allow read: if true; 
+      allow write: if request.auth != null;
+    }
+    
+    // Regla para Solicitudes: Solo el admin las lee, cualquiera las envía
+    match /solicitudes/{solicitudId} {
+      allow read: if request.auth != null;
+      allow write: if true;
+    }
+    
+    // Regla para Docentes: Solo ellos mismos o el admin pueden leer/escribir
+    match /docentes/{docenteId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Denegar el resto por defecto
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
