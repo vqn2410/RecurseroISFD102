@@ -100,26 +100,36 @@ const SobreEnsam = () => {
                 </div>
             </div>
 
-            <div className="card" style={{ marginBottom: '2rem', padding: '2rem', backgroundColor: '#f0f9ff', border: '1px solid #bae6fd' }}>
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem', color: '#0369a1' }}>
-                    <Music size={28} style={{ marginRight: '1rem' }} />
-                    <h2 style={{ marginBottom: 0 }}>Himno a la Escuela</h2>
-                </div>
-                <div style={{ fontStyle: 'italic', textAlign: 'center', color: '#0f172a', lineHeight: '2' }}>
-                    <p>
-                        "Compañeros, sepamos vivir el momento feliz que hoy nos une.<br />
-                        Que tu mano estreche la mía en un gesto de amor maternal.<br />
-                        Que tu canto y mi canto sean himno a la escuela que es patria y hogar."
-                    </p>
-                    <p>
-                        "Por la patria, hogar y escuela, por la dicha y amistad.<br />
-                        Avancemos bien alta la frente, avancemos gozando de paz."
-                    </p>
-                    <p style={{ fontSize: '0.85rem', marginTop: '1rem', color: '#475569' }}>
-                        Letra: Prof. Osvaldo Abruzzetti y Prof. María Luisa Tersano | Música: Prof. Aderm Lemos
-                    </p>
-                </div>
+        <div className="card" style={{ marginBottom: '2rem', padding: '2rem', backgroundColor: '#f0f9ff', border: '1px solid #bae6fd' }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem', color: '#0369a1' }}>
+                <Music size={28} style={{ marginRight: '1rem' }} />
+                <h2 style={{ marginBottom: 0 }}>Himno a la Escuela</h2>
             </div>
+            <div style={{ fontStyle: 'italic', textAlign: 'center', color: '#0f172a', lineHeight: '2' }}>
+                <p>
+                    "Compañeros, sepamos vivir el momento feliz que hoy nos une.<br />
+                    Que tu mano estreche la mía en un gesto de amor maternal.<br />
+                    Que tu canto y mi canto sean himno a la escuela que es patria y hogar."
+                </p>
+                <p>
+                    "Por la patria, hogar y escuela, por la dicha y amistad.<br />
+                    Avancemos bien alta la frente, avancemos gozando de paz."
+                </p>
+                <p style={{ fontSize: '0.85rem', marginTop: '1rem', marginBottom: '2rem', color: '#475569' }}>
+                    Letra: Prof. Osvaldo Abruzzetti y Prof. María Luisa Tersano | Música: Prof. Aderm Lemos
+                </p>
+            </div>
+            <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: '0.5rem' }}>
+                <iframe 
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                    src="https://www.youtube.com/embed/4CI6BPkip5U" 
+                    title="Himno ENSAM" 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowFullScreen>
+                </iframe>
+            </div>
+        </div>
 
             <div className="text-center text-secondary" style={{ marginTop: '3rem', fontSize: '0.9rem' }}>
                 <p>Esta información fue reconstruida gracias a el libro histórico del ENSAM, testimonios de ex-alumnos, docentes y no docentes.</p>

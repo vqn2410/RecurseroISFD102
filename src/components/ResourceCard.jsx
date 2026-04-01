@@ -60,7 +60,13 @@ const ResourceCard = ({ resource }) => {
                 <h3 className="card-title">{title}</h3>
                 {(resource.subidoPor || resource.fechaSubida || resource.createdAt) && (
                     <p className="text-secondary" style={{ fontSize: '0.85rem', marginBottom: '0.5rem', fontStyle: 'italic' }}>
-                        Subido por {resource.subidoPor || 'Docente'} el {formatDate(resource.fechaSubida || resource.createdAt)}
+                        Subido por {
+                            (resource.creatorEmail === 'nvergara@abc.gob.ar' || 
+                             resource.subidoPor === 'nvergara' || 
+                             resource.subidoPor === 'nvergara@abc.gob.ar') 
+                                ? 'Administrador UA ENSAM' 
+                                : (resource.subidoPor || 'Docente')
+                        } el {formatDate(resource.fechaSubida || resource.createdAt)}
                     </p>
                 )}
                 <p className="card-description">{description}</p>

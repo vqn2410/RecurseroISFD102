@@ -18,6 +18,7 @@ const Navbar = ({ user, userData }) => {
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
     const isAdmin = !userData || (userData?.rol && ['admin', 'administrador'].includes(userData.rol.toLowerCase()));
 
@@ -52,20 +53,47 @@ const Navbar = ({ user, userData }) => {
             <div className="navbar-container">
                 <Link to="/" className="navbar-brand" onClick={closeMenu}>
                     <img src="https://i.postimg.cc/j5LScsMX/Diseno-sin-titulo.png" alt="Logo ISFD 102" className="brand-logo" />
-                    <span className="brand-text">Recursero Académico UA ENSAM | ISFD N°102</span>
+                    <span className="brand-text">Recursero Académico de la Unidad Académica <br />Escuela Normal Superior Antonio Mentruyt <br />ISFD N°102</span>
                 </Link>
 
-                <div className="navbar-search-desktop">
-                    <form onSubmit={(e) => { e.preventDefault(); if (searchQuery.trim()) { navigate(`/buscar?q=${encodeURIComponent(searchQuery)}`); closeMenu(); } }}>
-                        <div className="search-input-wrapper">
-                            <Search size={16} className="search-icon" />
-                            <input
-                                type="text"
-                                placeholder="Buscar recursos..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="nav-search-input"
-                            />
+                <div className={`navbar-search-desktop ${isSearchExpanded ? 'expanded' : 'collapsed'}`}>
+                    <form onSubmit={(e) => { e.preventDefault(); if (searchQuery.trim()) { navigate(`/buscar?q=${encodeURIComponent(searchQuery)}`); closeMenu(); setIsSearchExpanded(false); } }}>
+                        <div className="search-input-wrapper desktop-search-wrapper">
+                            {!isSearchExpanded ? (
+                                <button
+                                    type="button"
+                                    className="search-toggle-icon"
+                                    onClick={() => setIsSearchExpanded(true)}
+                                    aria-label="Abrir búsqueda"
+                                >
+                                    <Search size={20} />
+                                </button>
+                            ) : (
+                                <div className="search-expandable expanded animate-expand">
+                                    <Search size={16} className="search-icon" />
+                                    <input
+                                        type="text"
+                                        placeholder="Buscar recursos..."
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        className="nav-search-input expandable"
+                                        autoFocus
+                                        onBlur={() => {
+                                            if (!searchQuery.trim()) {
+                                                setTimeout(() => setIsSearchExpanded(false), 200);
+                                            }
+                                        }}
+                                    />
+                                    <button
+                                        type="button"
+                                        className="search-close-btn"
+                                        onClick={() => { setIsSearchExpanded(false); setSearchQuery(''); }}
+                                        aria-label="Cerrar búsqueda"
+                                    >
+                                        <X size={16} />
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </form>
                 </div>

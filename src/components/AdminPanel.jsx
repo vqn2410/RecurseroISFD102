@@ -5,7 +5,8 @@ import UploadForm from './UploadForm';
 import RegisterUser from './RegisterUser';
 import DocentesPanel from './DocentesPanel';
 import ResourceCard from './ResourceCard';
-import { PlusCircle, List, UserPlus, Trash2, Users } from 'lucide-react';
+import SolicitudesPanel from './SolicitudesPanel';
+import { PlusCircle, List, UserPlus, Trash2, Users, ClipboardList } from 'lucide-react';
 import '../styles/admin.css';
 
 const AdminPanel = ({ userData }) => {
@@ -74,6 +75,12 @@ const AdminPanel = ({ userData }) => {
                                 onClick={() => setActiveTab('docentes')}
                             >
                                 <Users size={18} /> Base de Datos
+                            </button>
+                            <button
+                                className={`btn ${activeTab === 'solicitudes' ? 'btn-primary' : 'btn-outline'}`}
+                                onClick={() => setActiveTab('solicitudes')}
+                            >
+                                <ClipboardList size={18} /> Solicitudes
                             </button>
                             <button
                                 className={`btn ${activeTab === 'register' ? 'btn-primary' : 'btn-outline'}`}
@@ -152,6 +159,10 @@ const AdminPanel = ({ userData }) => {
 
                 {activeTab === 'docentes' && isAdmin && (
                     <DocentesPanel />
+                )}
+
+                {activeTab === 'solicitudes' && isAdmin && (
+                    <SolicitudesPanel />
                 )}
             </div>
         </div>

@@ -50,6 +50,12 @@ const UploadForm = ({ onUploadSuccess, userData }) => {
 
             const computedType = fileObject ? 'adjunto' : 'enlace';
 
+            let subidoPorNombre = userData?.nombreCompleto || (auth.currentUser ? (auth.currentUser.displayName || (auth.currentUser.email ? auth.currentUser.email.split('@')[0] : 'Docente')) : 'Docente');
+            
+            if (auth.currentUser && auth.currentUser.email === 'nvergara@abc.gob.ar') {
+                subidoPorNombre = 'Administrador UA ENSAM';
+            }
+
             const resourceData = {
                 title,
                 description,
@@ -58,7 +64,8 @@ const UploadForm = ({ onUploadSuccess, userData }) => {
                 tags: tagsArray,
                 fileUrl: linkUrl,
                 createdBy: auth.currentUser ? auth.currentUser.uid : null,
-                subidoPor: userData?.nombreCompleto || (auth.currentUser ? (auth.currentUser.displayName || (auth.currentUser.email ? auth.currentUser.email.split('@')[0] : 'Docente')) : 'Docente')
+                creatorEmail: auth.currentUser ? auth.currentUser.email : null,
+                subidoPor: subidoPorNombre
             };
 
             await createResource(resourceData, fileObject);

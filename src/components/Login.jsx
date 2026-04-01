@@ -3,7 +3,7 @@ import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/aut
 import { auth, db } from '../services/firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Mail, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Lock, Mail, AlertCircle, CheckCircle2, UserPlus, LogIn, User } from 'lucide-react';
 import '../styles/auth.css';
 
 const Login = () => {
@@ -12,6 +12,9 @@ const Login = () => {
     const [error, setError] = useState('');
     const [resetMsg, setResetMsg] = useState('');
     const [loading, setLoading] = useState(false);
+    const [isSolicitando, setIsSolicitando] = useState(false);
+    const [solicitudNombre, setSolicitudNombre] = useState('');
+    const [solicitudApellido, setSolicitudApellido] = useState('');
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
@@ -84,12 +87,62 @@ const Login = () => {
         }
     };
 
+    const handleSolicitarUsuario = async (e) => {
+        e.preventDefault();
+        const correo = email.trim().toLowerCase();
+        
+        if (!correo.endsWith('@abc.gob.ar')) {
+            setError('El correo institucional debe tener el dominio @abc.gob.ar');
+            return;
+        }
+
+        if (password.length < 6) {
+            setError('La clave provisional debe tener al menos 6 caracteres.');
+            return;
+        }
+
+        if (!solicitudNombre.trim() || !solicitudApellido.trim()) {
+            setError('Debes ingresar tu nombre y apellido.');
+            return;
+        }
+
+        setLoading(true);
+        setError('');
+        setResetMsg('');
+
+        try {
+            const { collection, addDoc } = await import('firebase/firestore');
+            await addDoc(collection(db, 'solicitudes'), {
+                nombre: solicitudNombre.trim(),
+                apellido: solicitudApellido.trim(),
+                email: correo,
+                claveProvisoria: password,
+                fechaCreacion: new Date(),
+                estado: 'pendiente'
+            });
+
+            setResetMsg('Tu solicitud ha sido enviada con éxito. Aguarda a que un administrador te dé de alta.');
+            setIsSolicitando(false);
+            setSolicitudNombre('');
+            setSolicitudApellido('');
+            setPassword('');
+            setEmail('');
+        } catch (err) {
+            console.error('Error enviando solicitud:', err);
+            setError('Ocurrió un error al enviar la solicitud. Intenta nuevamente.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="auth-container animate-fade-in">
             <div className="card form-card">
                 <div className="form-header">
-                    <h2 className="text-center">Acceso Docentes</h2>
-                    <p className="text-center text-secondary">Ingrese sus credenciales para continuar</p>
+                    <h2 className="text-center">{isSolicitando ? 'Solicitar Usuario' : 'Acceso Docentes'}</h2>
+                    <p className="text-center text-secondary">
+                        {isSolicitando ? 'Completa tus datos para solicitar el alta' : 'Ingrese sus credenciales para continuar'}
+                    </p>
                 </div>
 
                 {error && (
@@ -106,7 +159,44 @@ const Login = () => {
                     </div>
                 )}
 
-                <form onSubmit={handleLogin} className="auth-form">
+                <form onSubmit={isSolicitando ? handleSolicitarUsuario : handleLogin} className="auth-form">
+                    {isSolicitando && (
+                        <>
+                            <div className="form-group grid grid-cols-2" style={{ gap: '1rem' }}>
+                                <div>
+                                    <label className="form-label" htmlFor="nombre">Nombre</label>
+                                    <div className="input-with-icon">
+                                        <User className="input-icon" size={18} />
+                                        <input
+                                            id="nombre"
+                                            type="text"
+                                            className="form-input has-icon"
+                                            value={solicitudNombre}
+                                            onChange={(e) => setSolicitudNombre(e.target.value)}
+                                            required={isSolicitando}
+                                            placeholder="Juan"
+                                        />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="form-label" htmlFor="apellido">Apellido</label>
+                                    <div className="input-with-icon">
+                                        <User className="input-icon" size={18} />
+                                        <input
+                                            id="apellido"
+                                            type="text"
+                                            className="form-input has-icon"
+                                            value={solicitudApellido}
+                                            onChange={(e) => setSolicitudApellido(e.target.value)}
+                                            required={isSolicitando}
+                                            placeholder="Pérez"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </>
+                    )}
+
                     <div className="form-group">
                         <label className="form-label" htmlFor="email">Email institucional</label>
                         <div className="input-with-icon">
@@ -118,13 +208,13 @@ const Login = () => {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
-                                placeholder="docente@instituto.edu.ar"
+                                placeholder="docente@abc.gob.ar"
                             />
                         </div>
                     </div>
 
                     <div className="form-group">
-                        <label className="form-label" htmlFor="password">Contraseña</label>
+                        <label className="form-label" htmlFor="password">{isSolicitando ? 'Clave Provisoria' : 'Contraseña'}</label>
                         <div className="input-with-icon">
                             <Lock className="input-icon" size={18} />
                             <input
@@ -139,20 +229,44 @@ const Login = () => {
                         </div>
                     </div>
 
-                    <div style={{ textAlign: 'right', marginBottom: '1rem' }}>
-                        <button
-                            type="button"
-                            onClick={handleResetPassword}
-                            style={{ background: 'none', border: 'none', color: '#2563eb', fontSize: '0.875rem', cursor: 'pointer', padding: 0 }}
-                            disabled={loading}
-                        >
-                            ¿Olvidé mi contraseña?
-                        </button>
-                    </div>
+                    {!isSolicitando && (
+                        <div style={{ textAlign: 'right', marginBottom: '1rem' }}>
+                            <button
+                                type="button"
+                                onClick={handleResetPassword}
+                                style={{ background: 'none', border: 'none', color: '#2563eb', fontSize: '0.875rem', cursor: 'pointer', padding: 0 }}
+                                disabled={loading}
+                            >
+                                ¿Olvidé mi contraseña?
+                            </button>
+                        </div>
+                    )}
 
                     <button type="submit" className="btn btn-primary w-full" disabled={loading}>
-                        {loading ? 'Ingresando...' : 'Iniciar Sesión'}
+                        {loading 
+                            ? (isSolicitando ? 'Enviando...' : 'Ingresando...') 
+                            : (isSolicitando ? 'Enviar Solicitud' : 'Iniciar Sesión')}
                     </button>
+                    
+                    <div className="text-center" style={{ marginTop: '1.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setIsSolicitando(!isSolicitando);
+                                setError('');
+                                setResetMsg('');
+                            }}
+                            className="btn btn-outline w-full"
+                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                            disabled={loading}
+                        >
+                            {isSolicitando ? (
+                                <><LogIn size={18} /> Volver al Inicio de Sesión</>
+                            ) : (
+                                <><UserPlus size={18} /> Solicitar Usuario Docente</>
+                            )}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
