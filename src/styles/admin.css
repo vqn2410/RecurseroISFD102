@@ -139,3 +139,82 @@
 .dropdown-item.text-error:hover {
     background-color: rgba(239, 68, 68, 0.1);
 }
+
+/* Responsividad de Tablas para Celulares */
+@media (max-width: 767px) {
+    .admin-content {
+        padding: 1rem;
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+    }
+
+    .admin-table-container {
+        overflow-x: visible;
+    }
+
+    .admin-table thead {
+        display: none; /* Ocultar cabecera en móviles */
+    }
+
+    .admin-table, 
+    .admin-table tbody, 
+    .admin-table tr, 
+    .admin-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .admin-table tr {
+        background-color: var(--surface-color);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: 1rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-md);
+        position: relative;
+    }
+
+    .admin-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: right;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--bg-color);
+        min-height: 3rem;
+    }
+
+    .admin-table td:last-child {
+        border-bottom: none;
+        padding-top: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .admin-table td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        float: left;
+        margin-right: 1rem;
+        text-align: left;
+    }
+
+    /* Forzar alineación a la derecha en elementos flex dentro de celdas */
+    .td-flex-right {
+        justify-content: flex-end !important;
+        text-align: right;
+    }
+
+    .actions-cell {
+        justify-content: flex-end;
+        width: 100%;
+    }
+
+    .admin-table tr:hover {
+        background-color: var(--surface-color);
+        transform: translateY(-2px);
+    }
+}

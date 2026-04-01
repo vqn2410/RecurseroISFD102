@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth, db } from '../services/firebase';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Mail, AlertCircle, CheckCircle2, UserPlus, LogIn, User } from 'lucide-react';
 import '../styles/auth.css';
@@ -111,13 +111,16 @@ const Login = () => {
         setResetMsg('');
 
         try {
-            const { collection, addDoc } = await import('firebase/firestore');
+            if (!db) {
+                throw new Error("Base de datos no disponible. Verifique su conexión.");
+            }
+            
             await addDoc(collection(db, 'solicitudes'), {
                 nombre: solicitudNombre.trim(),
                 apellido: solicitudApellido.trim(),
                 email: correo,
                 claveProvisoria: password,
-                fechaCreacion: new Date(),
+                fechaCreacion: serverTimestamp(),
                 estado: 'pendiente'
             });
 
@@ -129,7 +132,7 @@ const Login = () => {
             setEmail('');
         } catch (err) {
             console.error('Error enviando solicitud:', err);
-            setError('Ocurrió un error al enviar la solicitud. Intenta nuevamente.');
+            setError(`Ocurrió un error: ${err.message || 'Error de conexión'}. Intente nuevamente.`);
         } finally {
             setLoading(false);
         }

@@ -141,16 +141,18 @@ const SolicitudesPanel = () => {
                         <tbody>
                             {solicitudes.map(sol => (
                                 <tr key={sol.id}>
-                                    <td>{formatDate(sol.fechaCreacion)}</td>
-                                    <td>{sol.nombre} {sol.apellido}</td>
-                                    <td>{sol.email}</td>
-                                    <td>
-                                        <span className={`badge ${sol.estado === 'pendiente' ? 'category-badge' : 'badge'}`} style={{ backgroundColor: sol.estado === 'aprobada' ? '#dcfce7' : '', color: sol.estado === 'aprobada' ? '#166534' : '' }}>
-                                            {sol.estado === 'pendiente' ? <Clock size={12} style={{ display: 'inline', marginRight: '4px' }} /> : <CheckCircle size={12} style={{ display: 'inline', marginRight: '4px' }} />}
-                                            {sol.estado === 'pendiente' ? 'Pendiente' : 'Aprobada'}
-                                        </span>
+                                    <td data-label="Fecha">{formatDate(sol.fechaCreacion)}</td>
+                                    <td data-label="Nombre Completo">{sol.nombre} {sol.apellido}</td>
+                                    <td data-label="Email">{sol.email}</td>
+                                    <td data-label="Estado">
+                                        <div style={{ display: 'flex', justifyContent: 'flex-start' }} className="td-flex-right">
+                                            <span className={`badge ${sol.estado === 'pendiente' ? 'category-badge' : 'badge'}`} style={{ backgroundColor: sol.estado === 'aprobada' ? '#dcfce7' : '', color: sol.estado === 'aprobada' ? '#166534' : '' }}>
+                                                {sol.estado === 'pendiente' ? <Clock size={12} style={{ display: 'inline', marginRight: '4px' }} /> : <CheckCircle size={12} style={{ display: 'inline', marginRight: '4px' }} />}
+                                                {sol.estado === 'pendiente' ? 'Pendiente' : 'Aprobada'}
+                                            </span>
+                                        </div>
                                     </td>
-                                    <td className="actions-cell">
+                                    <td data-label="Acciones" className="actions-cell">
                                         {sol.estado === 'pendiente' && (
                                             <div style={{ display: 'flex', gap: '4px' }}>
                                                 <button

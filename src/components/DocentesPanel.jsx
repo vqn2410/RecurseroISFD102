@@ -165,7 +165,7 @@ const DocentesPanel = () => {
                         <tbody>
                             {filteredDocentes.map(docente => (
                                 <tr key={docente.id}>
-                                    <td style={{ textAlign: 'center' }}>
+                                    <td data-label="Estado" style={{ textAlign: 'center' }}>
                                         {docente.onlineStatus ? (
                                             <span className="badge" title="Online" style={{ backgroundColor: 'var(--secondary)', color: 'white', padding: '0.2rem', minWidth: 'auto', borderRadius: '50%', display: 'inline-flex' }}>
                                                 <div style={{ width: '8px', height: '8px' }}></div>
@@ -176,19 +176,19 @@ const DocentesPanel = () => {
                                             </span>
                                         )}
                                     </td>
-                                    <td>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    <td data-label="Nombre Completo">
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'flex-end' }} className="td-flex-right">
                                             <Users size={16} className="text-secondary" />
                                             <span style={{ fontWeight: 500 }}>{docente.nombreCompleto || 'Sin nombre'}</span>
                                         </div>
                                     </td>
-                                    <td>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)' }}>
+                                    <td data-label="Email">
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', justifyContent: 'flex-end' }} className="td-flex-right">
                                             <Mail size={14} />
                                             {docente.email}
                                         </div>
                                     </td>
-                                    <td>
+                                    <td data-label="Rol">
                                         {(docente.rol === 'administrador' || docente.rol === 'admin') ? (
                                             <span className="badge" style={{ backgroundColor: 'rgba(79, 70, 229, 0.1)', color: 'var(--primary)' }}>
                                                 <ShieldCheck size={12} style={{ marginRight: '4px' }} /> {docente.rol}
@@ -199,20 +199,20 @@ const DocentesPanel = () => {
                                             </span>
                                         )}
                                     </td>
-                                    <td>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
+                                    <td data-label="Creado en">
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.875rem', justifyContent: 'flex-end' }} className="td-flex-right">
                                             <Clock size={14} />
                                             {formatDate(docente.fechaCreacion)}
                                         </div>
                                     </td>
-                                    <td>
+                                    <td data-label="1er Ingreso">
                                         {docente.firstLogin ? (
                                             <span className="badge" style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)', color: '#D97706' }}>Pendiente</span>
                                         ) : (
                                             <span className="badge" style={{ backgroundColor: 'rgba(16, 185, 129, 0.1)', color: 'var(--secondary)' }}>Completado</span>
                                         )}
                                     </td>
-                                    <td className="actions-cell" style={{ position: 'relative' }}>
+                                    <td data-label="Acciones" className="actions-cell" style={{ position: 'relative' }}>
                                         <button
                                             className="btn-icon"
                                             title="Opciones"

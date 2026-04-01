@@ -120,3 +120,25 @@
     font-size: 1.125rem;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
+
+/* Estilos para las tarjetas de categorías en la lista general */
+.category-card-anim {
+    color: white !important;
+}
+
+.category-card-anim:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.2) !important;
+}
+
+.category-card-anim p {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.category-card-anim h3 {
+    color: white !important;
+}
+
+.category-card-anim svg {
+    color: white !important;
+}

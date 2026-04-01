@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { createResource } from '../services/resourceService';
+import { useState, useEffect } from 'react';
+import { createResource, updateResource } from '../services/resourceService';
 import { auth } from '../services/firebase';
-import { Upload, X, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Upload, X, AlertCircle, CheckCircle2, Save } from 'lucide-react';
 import '../styles/auth.css';
 
 const PROFESORADOS = [
@@ -12,17 +12,28 @@ const AREAS_TRANSVERSALES = [
     "Educación Ambiental", "ESI (Educación Sexual Integral)", "Fonoaudiología", "Tics"
 ];
 
-const UploadForm = ({ onUploadSuccess, userData }) => {
+const UploadForm = ({ onUploadSuccess, userData, initialData = null }) => {
+    const isEditing = !!initialData;
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [categories, setCategories] = useState([]);
     const [tags, setTags] = useState('');
-    const [linkUrl, setLinkUrl] = useState(''); // holds url text
-    const [fileObject, setFileObject] = useState(null); // holds File object
+    const [linkUrl, setLinkUrl] = useState(''); 
+    const [fileObject, setFileObject] = useState(null); 
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+
+    useEffect(() => {
+        if (initialData) {
+            setTitle(initialData.title || '');
+            setDescription(initialData.description || '');
+            setCategories(initialData.categories || []);
+            setTags(initialData.tags?.join(', ') || '');
+            setLinkUrl(initialData.type === 'enlace' ? initialData.fileUrl : '');
+        }
+    }, [initialData]);
 
     const toggleCategory = (cat) => {
         setCategories(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]);
@@ -42,13 +53,12 @@ const UploadForm = ({ onUploadSuccess, userData }) => {
         try {
             const tagsArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
 
-            if (!fileObject && !linkUrl) {
+            // Validation: must have file or link if NOT editing, or keep previous if editing
+            if (!isEditing && !fileObject && !linkUrl) {
                 setError("Debe proporcionar un Archivo o un Enlace válido.");
                 setLoading(false);
                 return;
             }
-
-            const computedType = fileObject ? 'adjunto' : 'enlace';
 
             let subidoPorNombre = userData?.nombreCompleto || (auth.currentUser ? (auth.currentUser.displayName || (auth.currentUser.email ? auth.currentUser.email.split('@')[0] : 'Docente')) : 'Docente');
             
@@ -59,33 +69,53 @@ const UploadForm = ({ onUploadSuccess, userData }) => {
             const resourceData = {
                 title,
                 description,
-                type: computedType,
                 categories,
                 tags: tagsArray,
-                fileUrl: linkUrl,
-                createdBy: auth.currentUser ? auth.currentUser.uid : null,
-                creatorEmail: auth.currentUser ? auth.currentUser.email : null,
-                subidoPor: subidoPorNombre
             };
 
-            await createResource(resourceData, fileObject);
+            if (isEditing) {
+                // If editing and no new file is selected, keep the old linkUrl if it exists
+                if (!fileObject && linkUrl) {
+                    resourceData.fileUrl = linkUrl;
+                    resourceData.type = 'enlace';
+                } else if (!fileObject && initialData.type === 'adjunto') {
+                    resourceData.fileUrl = initialData.fileUrl;
+                    resourceData.type = 'adjunto';
+                } else if (fileObject) {
+                    resourceData.type = 'adjunto';
+                }
 
-            setSuccess("Recurso subido correctamente.");
+                await updateResource(initialData.id, resourceData, fileObject);
+                setSuccess("Recurso actualizado correctamente.");
+            } else {
+                const computedType = fileObject ? 'adjunto' : 'enlace';
+                resourceData.type = computedType;
+                resourceData.fileUrl = linkUrl;
+                resourceData.createdBy = auth.currentUser ? auth.currentUser.uid : null;
+                resourceData.creatorEmail = auth.currentUser ? auth.currentUser.email : null;
+                resourceData.subidoPor = subidoPorNombre;
+
+                await createResource(resourceData, fileObject);
+                setSuccess("Recurso subido correctamente.");
+            }
+
             if (onUploadSuccess) onUploadSuccess();
 
-            // Reset
-            setTitle('');
-            setDescription('');
-            setCategories([]);
-            setTags('');
-            setLinkUrl('');
-            setFileObject(null);
-            const fileInput = document.getElementById('fileUpload');
-            if (fileInput) fileInput.value = '';
+            if (!isEditing) {
+                // Reset only if creating
+                setTitle('');
+                setDescription('');
+                setCategories([]);
+                setTags('');
+                setLinkUrl('');
+                setFileObject(null);
+                const fileInput = document.getElementById('fileUpload');
+                if (fileInput) fileInput.value = '';
+            }
 
         } catch (err) {
             console.error(err);
-            setError("Error al subir el recurso. Intente nuevamente.");
+            setError(`Error al ${isEditing ? 'actualizar' : 'subir'} el recurso. Intente nuevamente.`);
         } finally {
             setLoading(false);
         }
@@ -100,8 +130,10 @@ const UploadForm = ({ onUploadSuccess, userData }) => {
     return (
         <div className="card animate-fade-in" style={{ maxWidth: '600px', margin: '0 auto' }}>
             <div className="form-header">
-                <h2>Subir Nuevo Recurso</h2>
-                <p className="text-secondary">Complete los datos para agregar material didáctico u otros recursos.</p>
+                <h2>{isEditing ? 'Editar Recurso' : 'Subir Nuevo Recurso'}</h2>
+                <p className="text-secondary">
+                    {isEditing ? 'Modifique los datos del recurso seleccionado.' : 'Complete los datos para agregar material didáctico u otros recursos.'}
+                </p>
             </div>
 
             {error && (
@@ -144,8 +176,6 @@ const UploadForm = ({ onUploadSuccess, userData }) => {
                         placeholder="Breve reseña sobre el material..."
                     />
                 </div>
-
-
 
                 <div className="form-group">
                     <label className="form-label">Secciones / Destinos (Puede seleccionar varios)</label>
@@ -198,7 +228,7 @@ const UploadForm = ({ onUploadSuccess, userData }) => {
                 </div>
 
                 <div className="form-group" style={{ border: '2px dashed #ddd', padding: '15px', borderRadius: '8px', marginBottom: '15px' }}>
-                    <label className="form-label" style={{ fontWeight: 'bold' }}>Opción 1: Subir un Archivo</label>
+                    <label className="form-label" style={{ fontWeight: 'bold' }}>Opción 1: {isEditing ? 'Cambiar Archivo (opcional)' : 'Subir un Archivo'}</label>
                     <p className="text-secondary" style={{ fontSize: '0.85rem', marginBottom: '10px' }}>PDF, Word, Imágenes, etc.</p>
                     <input
                         id="fileUpload"
@@ -211,7 +241,7 @@ const UploadForm = ({ onUploadSuccess, userData }) => {
                 <div className="text-center" style={{ margin: '10px 0', fontWeight: 'bold', color: '#666' }}>O</div>
 
                 <div className="form-group" style={{ border: '2px dashed #ddd', padding: '15px', borderRadius: '8px' }}>
-                    <label className="form-label" style={{ fontWeight: 'bold' }} htmlFor="urlLink">Opción 2: Enlace Externo</label>
+                    <label className="form-label" style={{ fontWeight: 'bold' }} htmlFor="urlLink">Opción 2: {isEditing ? 'Cambiar Enlace Externo' : 'Enlace Externo'}</label>
                     <p className="text-secondary" style={{ fontSize: '0.85rem', marginBottom: '10px' }}>Link a YouTube, Drive, páginas web, etc.</p>
                     <input
                         id="urlLink"
@@ -224,8 +254,8 @@ const UploadForm = ({ onUploadSuccess, userData }) => {
                 </div>
 
                 <button type="submit" className="btn btn-primary w-full mt-3" disabled={loading}>
-                    {loading ? 'Subiendo...' : 'Subir Recurso'}
-                    {!loading && <Upload size={18} />}
+                    {loading ? (isEditing ? 'Guardando...' : 'Subiendo...') : (isEditing ? 'Guardar Cambios' : 'Subir Recurso')}
+                    {!loading && (isEditing ? <Save size={18} /> : <Upload size={18} />)}
                 </button>
             </form>
         </div>

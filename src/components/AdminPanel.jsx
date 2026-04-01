@@ -6,13 +6,14 @@ import RegisterUser from './RegisterUser';
 import DocentesPanel from './DocentesPanel';
 import ResourceCard from './ResourceCard';
 import SolicitudesPanel from './SolicitudesPanel';
-import { PlusCircle, List, UserPlus, Trash2, Users, ClipboardList } from 'lucide-react';
+import { PlusCircle, List, UserPlus, Trash2, Users, ClipboardList, Pencil } from 'lucide-react';
 import '../styles/admin.css';
 
 const AdminPanel = ({ userData }) => {
     const [activeTab, setActiveTab] = useState('resources'); // resources, upload, register, docentes
     const [resources, setResources] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [editingResource, setEditingResource] = useState(null);
 
     const isAdmin = !userData || (userData?.rol && ['admin', 'administrador'].includes(userData.rol.toLowerCase()));
 
@@ -34,6 +35,11 @@ const AdminPanel = ({ userData }) => {
             fetchResources();
         }
     }, [activeTab, isAdmin]);
+
+    const handleEdit = (resource) => {
+        setEditingResource(resource);
+        setActiveTab('upload');
+    };
 
     const handleDelete = async (resource) => {
         if (window.confirm(`¿Estás seguro de eliminar el recurso "${resource.title}"?`)) {
@@ -64,9 +70,12 @@ const AdminPanel = ({ userData }) => {
                     </button>
                     <button
                         className={`btn ${activeTab === 'upload' ? 'btn-primary' : 'btn-outline'}`}
-                        onClick={() => setActiveTab('upload')}
+                        onClick={() => {
+                            setEditingResource(null);
+                            setActiveTab('upload');
+                        }}
                     >
-                        <PlusCircle size={18} /> Subir
+                        <PlusCircle size={18} /> {editingResource ? 'Editando' : 'Subir'}
                     </button>
                     {isAdmin && (
                         <>
@@ -115,9 +124,9 @@ const AdminPanel = ({ userData }) => {
                                     <tbody>
                                         {resources.map(resource => (
                                             <tr key={resource.id}>
-                                                <td>{resource.title}</td>
-                                                <td>
-                                                    <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                                                <td data-label="Título">{resource.title}</td>
+                                                <td data-label="Categoría">
+                                                    <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', justifyContent: 'flex-start' }} className="td-flex-right">
                                                         {resource.categories && resource.categories.length > 0 ? (
                                                             resource.categories.map(cat => <span key={cat} className="badge" style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}>{cat}</span>)
                                                         ) : (
@@ -125,13 +134,20 @@ const AdminPanel = ({ userData }) => {
                                                         )}
                                                     </div>
                                                 </td>
-                                                <td>{resource.type}</td>
-                                                <td>
+                                                <td data-label="Tipo">{resource.type}</td>
+                                                <td data-label="Fecha">
                                                     {resource.createdAt?.toDate
                                                         ? resource.createdAt.toDate().toLocaleDateString()
                                                         : 'N/A'}
                                                 </td>
-                                                <td className="actions-cell">
+                                                <td data-label="Acciones" className="actions-cell">
+                                                    <button
+                                                        className="btn-icon text-primary hover-bg-blue"
+                                                        onClick={() => handleEdit(resource)}
+                                                        title="Editar"
+                                                    >
+                                                        <Pencil size={18} />
+                                                    </button>
                                                     <button
                                                         className="btn-icon text-error hover-bg-red"
                                                         onClick={() => handleDelete(resource)}
@@ -150,7 +166,29 @@ const AdminPanel = ({ userData }) => {
                 )}
 
                 {activeTab === 'upload' && (
-                    <UploadForm onUploadSuccess={() => setActiveTab('resources')} userData={userData} />
+                    <div className="animate-fade-in">
+                        {editingResource && (
+                            <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+                                <button
+                                    className="btn btn-outline"
+                                    onClick={() => {
+                                        setEditingResource(null);
+                                        setActiveTab('resources');
+                                    }}
+                                >
+                                    Cancelar Edición
+                                </button>
+                            </div>
+                        )}
+                        <UploadForm
+                            onUploadSuccess={() => {
+                                setEditingResource(null);
+                                setActiveTab('resources');
+                            }}
+                            userData={userData}
+                            initialData={editingResource}
+                        />
+                    </div>
                 )}
 
                 {activeTab === 'register' && isAdmin && (
