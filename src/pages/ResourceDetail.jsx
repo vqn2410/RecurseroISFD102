@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getResourceById } from '../services/resourceService';
 import { 
     FileText, File, Image as ImageIcon, Video, Link as LinkIcon, 
-    Calendar, User, ArrowLeft, Tag, ExternalLink, Download, 
+    ArrowLeft, Tag, ExternalLink, Download, 
     Info, Layers, Share2, Clipboard, Globe 
 } from 'lucide-react';
 import '../styles/resource-detail.css';
@@ -68,11 +68,6 @@ const ResourceDetail = () => {
         }
     };
 
-    const formatDate = (timestamp) => {
-        if (!timestamp) return '';
-        const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-        return date.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
-    };
 
     const getEmbedYoutubeUrl = (url) => {
         if (!url) return null;
@@ -132,14 +127,6 @@ const ResourceDetail = () => {
                             <span>Recurso {resource.type?.toUpperCase()}</span>
                         </div>
                         <h1 className="detail-header-title" style={{ color: 'var(--text-primary)', textShadow: 'none', textAlign: 'left', marginBottom: '1rem', marginTop: '0.5rem', width: '100%' }}>{resource.title}</h1>
-                        <div style={{ display: 'flex', gap: '1.5rem', color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '1.5rem' }}>
-                            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}>
-                                <User size={16} /> {(resource.subidoPor || 'UA ENSAM').split('@')[0]}
-                            </span>
-                            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}>
-                                <Calendar size={16} /> {formatDate(resource.createdAt || resource.fechaSubida)}
-                            </span>
-                        </div>
 
                         {/* Botón de Acción Rápida (PARA CARGA SIN SCROLL) */}
                         {resource.fileUrl && (

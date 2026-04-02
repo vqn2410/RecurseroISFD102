@@ -18,7 +18,7 @@ const CATEGORY_COLORS = {
 
 const ResourceCard = ({ resource }) => {
     const navigate = useNavigate();
-    const { id, title, description, type, category, categories, createdAt } = resource;
+    const { id, title, description, type, category, categories } = resource;
 
     const getCategoryStyle = (cat) => {
         const style = CATEGORY_COLORS[cat];
@@ -34,12 +34,6 @@ const ResourceCard = ({ resource }) => {
             case 'enlace': return <LinkIcon size={20} className="text-gray" />;
             default: return <File size={20} className="text-gray" />;
         }
-    };
-
-    const formatDate = (timestamp) => {
-        if (!timestamp) return '';
-        const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-        return date.toLocaleDateString('es-AR', { day: 'numeric', month: 'short' });
     };
 
     return (
@@ -59,11 +53,6 @@ const ResourceCard = ({ resource }) => {
             </div>
 
             <div className="card-bottom">
-                <div className="card-info-row">
-                    <span className="card-date-sq"><Calendar size={12} /> {formatDate(createdAt)}</span>
-                    <span className="card-author-sq">{(resource.subidoPor || 'Docente').split('@')[0]}</span>
-                </div>
-                
                 <button className="btn-card-action" onClick={(e) => { e.stopPropagation(); navigate(`/recurso/${id}`); }}>
                     Detalles <ArrowRight size={14} />
                 </button>
