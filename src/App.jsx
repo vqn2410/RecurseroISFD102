@@ -5,6 +5,7 @@ import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db, isFirebaseConfigured } from './services/firebase';
 
 import Navbar from './components/Navbar';
+import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 
 // Lazy loading components optimization
@@ -82,6 +83,7 @@ function AppContent() {
 
   return (
     <div className="app-container">
+      <ScrollToTop />
       <Navbar user={user} userData={userData} />
       <main className="main-content">
         <Suspense fallback={<div className="loading-state text-center py-10"><p className="text-secondary">Cargando...</p></div>}>

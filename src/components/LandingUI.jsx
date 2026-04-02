@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
+import Logo from './logo';
 import { Instagram, Facebook, Youtube, ExternalLink, Mail, Phone, MapPin } from 'lucide-react';
 
 export const LandingNavbar = ({ user, userData }) => {
@@ -19,14 +20,8 @@ export const LandingFooter = () => {
 
           {/* Brand & Logo */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-              <img src="https://cdn.phototourl.com/member/2026-04-01-18b3281e-b51e-4ec6-b664-ab4e364d159d.png" alt="Logo ENSAM" style={{ height: '50px' }} />
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontSize: '1.1rem', fontWeight: '800', color: 'var(--color-primary)', lineHeight: '1.1' }}>Recursero Académico</span>
-                <span style={{ fontSize: '0.75rem', fontWeight: '500', color: 'var(--text-secondary)' }}>UA ENSAM | ISFD N°102</span>
-              </div>
-            </div>
-            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.6', maxWidth: '300px' }}>
+            <Logo isFooter={true} />
+            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.6', maxWidth: '300px', marginTop: '1.5rem' }}>
               Plataforma de recursos educativos la Unidad Académica de la Escuela Normal Superior "Antonio Mentruyt" | ISFD N° 102.
             </p>
           </div>

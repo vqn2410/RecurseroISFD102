@@ -7,7 +7,7 @@ import {
     Info, Layers, Share2, Clipboard, Globe 
 } from 'lucide-react';
 import '../styles/resource-detail.css';
-import useReveal from '../hooks/useReveal';
+import { LandingFooter } from '../components/LandingUI';
 
 const CATEGORY_THEMES = {
     "Biología": { gradient: "linear-gradient(135deg, #10B981, #047857)", color: "#10B981" },
@@ -24,7 +24,6 @@ const CATEGORY_THEMES = {
 };
 
 const ResourceDetail = () => {
-    useReveal();
     const { id } = useParams();
     const navigate = useNavigate();
     const [resource, setResource] = useState(null);
@@ -36,6 +35,11 @@ const ResourceDetail = () => {
             try {
                 const data = await getResourceById(id);
                 setResource(data);
+                
+                // Automatic scroll to the resource content after loading
+                setTimeout(() => {
+                    window.scrollTo({ top: 120, behavior: 'instant' });
+                }, 10);
             } catch (err) {
                 console.error("Detalle fetch error:", err);
                 setError('No se pudo encontrar el recurso solicitado.');
@@ -44,7 +48,7 @@ const ResourceDetail = () => {
             }
         };
         fetchResource();
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 100);
     }, [id]);
 
     const getTheme = () => {
@@ -103,56 +107,69 @@ const ResourceDetail = () => {
     const embedUrl = isVideo ? getEmbedYoutubeUrl(resource.fileUrl) : null;
 
     return (
-        <div className="detail-page animate-fade-in">
+        <div className="detail-page animate-fade-in" style={{ paddingBottom: 0 }}>
             <button onClick={() => navigate(-1)} className="detail-back-btn">
                 <ArrowLeft size={18} /> Volver
             </button>
 
-            <header className="detail-header" style={{ background: theme.gradient }}>
-                <div className="detail-header-overlay"></div>
+            <header className="detail-header" style={{ background: theme.gradient, height: '220px' }}>
+                <div className="detail-header-overlay" style={{ opacity: 0.8 }}></div>
                 <div className="detail-header-icons">
                     {[1, 2, 3, 4, 5].map(i => (
                         <div key={i} className="animate-float" style={{ animationDelay: `${i * 0.5}s` }}>
-                            {getIcon(resource.type, 120)}
+                            {getIcon(resource.type, 180)}
                         </div>
                     ))}
                 </div>
-                
-                <div className="detail-header-content reveal">
-                    <div className="detail-meta-pill mb-2">
-                        {getIcon(resource.type, 16)}
-                        <span>Recurso {resource.type?.toUpperCase()}</span>
-                    </div>
-                    <h1 className="detail-header-title">{resource.title}</h1>
-                    <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', opacity: 0.9 }}>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}>
-                            <User size={16} /> {(resource.subidoPor || 'UA ENSAM').split('@')[0]}
-                        </span>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}>
-                            <Calendar size={16} /> {formatDate(resource.createdAt || resource.fechaSubida)}
-                        </span>
-                    </div>
-                </div>
             </header>
 
-            <div className="detail-card-container">
-                <div className="detail-main-card reveal">
-                    <div className="detail-content-grid">
-                        <article className="detail-body">
-                            <h2 className="detail-section-title">
-                                <FileText size={20} /> Descripción del Recurso
-                            </h2>
-                            <div className="detail-description">
-                                {resource.description || 'Sin descripción disponible.'}
-                            </div>
+            <div className="detail-card-container" style={{ marginTop: '-120px' }}>
+                <div className="detail-main-card">
+                    {/* Header integration in card */}
+                    <div className="detail-content-header" style={{ padding: '2.5rem 2.5rem 0', borderBottom: 'none' }}>
+                        <div className="detail-meta-pill mb-2" style={{ background: 'rgba(var(--primary-rgb, 79, 70, 229), 0.1)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', backdropFilter: 'none' }}>
+                            {getIcon(resource.type, 16)}
+                            <span>Recurso {resource.type?.toUpperCase()}</span>
+                        </div>
+                        <h1 className="detail-header-title" style={{ color: 'var(--text-primary)', textShadow: 'none', textAlign: 'left', marginBottom: '1rem', marginTop: '0.5rem', width: '100%' }}>{resource.title}</h1>
+                        <div style={{ display: 'flex', gap: '1.5rem', color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '1.5rem' }}>
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}>
+                                <User size={16} /> {(resource.subidoPor || 'UA ENSAM').split('@')[0]}
+                            </span>
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}>
+                                <Calendar size={16} /> {formatDate(resource.createdAt || resource.fechaSubida)}
+                            </span>
+                        </div>
 
-                            {/* Vista Previa Automática */}
+                        {/* Botón de Acción Rápida (PARA CARGA SIN SCROLL) */}
+                        {resource.fileUrl && (
+                            <div style={{ marginBottom: '2rem' }}>
+                                <a 
+                                    href={resource.fileUrl} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    className="btn btn-primary"
+                                    style={{ background: theme.gradient, borderColor: 'transparent', width: 'auto', padding: '1rem 2rem', fontSize: '1.1rem', fontWeight: 'Bold', display: 'inline-flex', alignItems: 'center', gap: '0.75rem', borderRadius: '12px' }}
+                                >
+                                    {resource.type === 'enlace' || resource.type === 'youtube' ? (
+                                        <>Explorar Recurso <ExternalLink size={20} /></>
+                                    ) : (
+                                        <>Descargar Material <Download size={20} /></>
+                                    )}
+                                </a>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="detail-content-grid" style={{ paddingTop: '1rem' }}>
+                        <article className="detail-body">
+                            {/* Vista Previa Automática (AHORA PRIMERO) */}
                             {(resource.type === 'imagen' || resource.type === 'pdf' || embedUrl) && (
-                                <div style={{ marginTop: '2.5rem' }}>
-                                    <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                        <ImageIcon size={18} /> Vista Previa
-                                    </h3>
-                                    <div className="detail-video-wrapper reveal">
+                                <div style={{ marginBottom: '2.5rem' }}>
+                                    <h2 className="detail-section-title">
+                                        <ImageIcon size={20} /> Vista Previa del Material
+                                    </h2>
+                                    <div className="detail-video-wrapper">
                                         {resource.type === 'imagen' && (
                                             <img 
                                                 src={resource.fileUrl} 
@@ -183,6 +200,13 @@ const ResourceDetail = () => {
                                     </div>
                                 </div>
                             )}
+
+                            <h2 className="detail-section-title">
+                                <FileText size={20} /> Información y Descripción
+                            </h2>
+                            <div className="detail-description">
+                                {resource.description || 'Sin descripción disponible.'}
+                            </div>
                         </article>
 
                         <aside className="detail-sidebar">
@@ -259,6 +283,8 @@ const ResourceDetail = () => {
                     </div>
                 </div>
             </div>
+            
+            <LandingFooter />
         </div>
     );
 };

@@ -32,8 +32,8 @@
     object-fit: contain;
 }
 
-.brand-text {
-    display: none;
+.brand-text, .brand-text-footer {
+    display: flex;
     flex-direction: column;
     justify-content: center;
 }
@@ -52,11 +52,29 @@
     margin-top: 2px;
 }
 
-@media (min-width: 1024px) {
-    .brand-text {
-        display: flex;
+.brand-text-footer .brand-title {
+    font-size: 1.25rem;
+}
+
+.brand-text-footer .brand-subtitle {
+    font-size: 0.85rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .brand-title {
+        font-size: 1rem;
+    }
+    .brand-subtitle {
+        font-size: 0.62rem;
+        max-width: 140px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
+
+/* brand-text is now always displayed */
 
 /* Search Bar */
 .navbar-search-desktop {

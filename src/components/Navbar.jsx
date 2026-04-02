@@ -5,6 +5,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { LogOut, User, Menu, X, Search } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import '../styles/navbar.css';
+import Logo from './logo';
 
 const PROFESORADOS = [
     "Biología", "Física", "Matemática", "Primaria", "Inicial", "Economía"
@@ -74,13 +75,7 @@ const Navbar = ({ user, userData, transparent = false }) => {
     return (
         <nav className={`navbar ${isTransparentActive ? 'navbar-transparent' : ''}`}>
             <div className="navbar-container">
-                <Link to="/" className="navbar-brand" onClick={closeMenu}>
-                    <img src="https://cdn.phototourl.com/member/2026-04-01-18b3281e-b51e-4ec6-b664-ab4e364d159d.png" alt="Logo ISFD 102" className="brand-logo" />
-                    <div className="brand-text">
-                        <span className="brand-title">Recursero Académico</span>
-                        <span className="brand-subtitle">UA ENSAM | ISFD N°102</span>
-                    </div>
-                </Link>
+                <Logo onClick={closeMenu} />
 
                 <div className={`navbar-search-desktop ${isSearchExpanded ? 'expanded' : 'collapsed'}`}>
                     <form onSubmit={(e) => { e.preventDefault(); if (searchQuery.trim()) { navigate(`/buscar?q=${encodeURIComponent(searchQuery)}`); closeMenu(); setIsSearchExpanded(false); } }}>

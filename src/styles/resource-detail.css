@@ -5,7 +5,7 @@
 }
 
 .detail-header {
-    height: 400px;
+    height: 280px;
     width: 100%;
     position: relative;
     overflow: hidden;
@@ -39,15 +39,15 @@
     z-index: 2;
     max-width: 900px;
     padding: 0 1.5rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .detail-header-title {
-    font-size: 3.5rem;
+    font-size: 2.25rem;
     font-weight: 800;
-    margin-bottom: 1rem;
-    text-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    line-height: 1.1;
+    margin-bottom: 0.75rem;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    line-height: 1.2;
     color: #ffffff;
 }
 
@@ -66,7 +66,7 @@
 
 .detail-card-container {
     max-width: 1000px;
-    margin: -80px auto 0;
+    margin: -40px auto 0;
     position: relative;
     z-index: 10;
     padding: 0 1.5rem;
@@ -93,7 +93,7 @@
 }
 
 .detail-body {
-    padding: 3rem;
+    padding: 2rem;
     border-right: 1px solid var(--border-color);
 }
 
@@ -105,7 +105,7 @@
 }
 
 .detail-sidebar {
-    padding: 3rem;
+    padding: 2rem;
     background: rgba(var(--primary-rgb, 79, 70, 229), 0.02);
 }
 
@@ -200,7 +200,7 @@
 /* Mobile Responsiveness Extra */
 @media (max-width: 600px) {
     .detail-header {
-        height: 320px;
+        height: 240px;
     }
     
     .detail-header-title {

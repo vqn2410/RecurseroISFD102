@@ -5,6 +5,7 @@ import { db } from '../services/firebase';
 import ResourceCard from '../components/ResourceCard';
 import { Search, AlertCircle, Filter } from 'lucide-react';
 import '../styles/home.css';
+import { LandingFooter } from '../components/LandingUI';
 
 const SearchPage = () => {
     const [resources, setResources] = useState([]);
@@ -17,8 +18,6 @@ const SearchPage = () => {
 
     useEffect(() => {
         // We use onSnapshot to provide REALTIME updates for the search results.
-        // We fetch all resources and filter client-side because Firestore doesn't natively support
-        // full-text search across multiple fields (title, description, tags) without a 3rd party service.
         const q = query(collection(db, "recursos"), orderBy("createdAt", "desc"));
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const usersList = [];
@@ -60,9 +59,9 @@ const SearchPage = () => {
     });
 
     return (
-        <div className="animate-fade-in" style={{ paddingBottom: '5rem' }}>
+        <div className="animate-fade-in" style={{ paddingBottom: '0' }}>
             <div className="category-header" style={{ background: 'var(--white)', borderBottom: '1px solid var(--border-color)', marginBottom: 0 }}>
-                <div className="container" style={{ position: 'relative', zIndex: 1, padding: '4rem 1.5rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div className="container" style={{ position: 'relative', zIndex: 1, padding: '3rem 1.5rem 2rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <div className="category-bg-icons" style={{ opacity: 0.05, color: 'var(--primary)' }}>
                         <Search size={84} />
                     </div>
@@ -103,7 +102,7 @@ const SearchPage = () => {
                </div>
             </div>
 
-            <div className="container" style={{ marginTop: '3rem' }}>
+            <div className="container" style={{ marginTop: '3rem', marginBottom: '5rem' }}>
                 {!searchQuery ? (
                     <div className="alert alert-error" style={{ maxWidth: '600px', margin: '2rem auto' }}>
                         <AlertCircle size={16} />
@@ -127,6 +126,8 @@ const SearchPage = () => {
                     </div>
                 )}
             </div>
+            
+            <LandingFooter />
         </div>
     );
 };

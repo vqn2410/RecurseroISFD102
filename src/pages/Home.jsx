@@ -14,7 +14,7 @@ const Home = () => {
         const fetchRecentResources = async () => {
             try {
                 const data = await getResources();
-                setResources(data.slice(0, 6)); // Simulate limit for recent
+                setResources(data.slice(0, 12)); // Show a larger set of recent resources
             } catch (error) {
                 console.error("Error fetching resources:", error);
             } finally {
