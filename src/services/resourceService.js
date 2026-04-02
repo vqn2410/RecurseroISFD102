@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, doc, deleteDoc, updateDoc, query, orderBy, where, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, getDocs, getDoc, doc, deleteDoc, updateDoc, query, orderBy, where, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { db, storage } from "./firebase";
 
@@ -57,6 +57,23 @@ export const getResources = async (categoryFilter = null, userId = null) => {
         return resources;
     } catch (error) {
         console.error("Error fetching resources: ", error);
+        throw error;
+    }
+};
+
+// Read Single
+export const getResourceById = async (id) => {
+    try {
+        const docRef = doc(db, "recursos", id);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            return { id: docSnap.id, ...docSnap.data() };
+        } else {
+            throw new Error("Resource not found");
+        }
+    } catch (error) {
+        console.error("Error fetching single resource:", error);
         throw error;
     }
 };

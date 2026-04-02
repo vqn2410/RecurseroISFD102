@@ -1,0 +1,58 @@
+.main-hero-ensam {
+    height: 70vh;
+    background: linear-gradient(135deg, var(--color-primary) 0%, #1e1b4b 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
+}
+
+.ensam-title-main {
+    color: white;
+    font-size: 3.5rem;
+    font-weight: 800;
+}
+
+.container-grid-ensam {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 4rem;
+    margin-bottom: 8rem;
+    padding: 0 1.5rem;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 2.5rem;
+    padding-left: 1.5rem;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -0.5rem;
+    top: 5px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    border: 4px solid white;
+    box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+@media (max-width: 768px) {
+    .main-hero-ensam {
+        height: 50vh;
+        padding-top: 5rem;
+    }
+
+    .ensam-title-main {
+        font-size: 2.5rem;
+    }
+
+    .container-grid-ensam {
+        gap: 2.5rem;
+        margin-bottom: 4rem;
+    }
+}

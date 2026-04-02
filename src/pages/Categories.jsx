@@ -5,6 +5,7 @@ import ResourceCard from '../components/ResourceCard';
 import { AlertCircle, Filter, Dna, Microscope, Leaf, Bug, Zap, Orbit, Activity, Calculator, PieChart, Binary, TrendingUp, Pencil, BookOpen, Shapes, Backpack, Palette, Smile, Gamepad, Baby, Coins, Building, Banknote, TreeDeciduous, Recycle, Sun, Sprout, HeartHandshake, Users, Heart, Ear, MessageCircle, Mic, Volume2, Monitor, Cpu, Wifi, Bot } from 'lucide-react';
 import '../styles/home.css';
 import '../styles/categories.css';
+import { LandingFooter } from '../components/LandingUI';
 
 const PROFESORADOS = [
     "Biología", "Física", "Matemática", "Primaria", "Inicial", "Economía"
@@ -116,13 +117,27 @@ const Categories = () => {
 
     const theme = getCategoryTheme(categoryFilter);
 
+    const [filterType, setFilterType] = useState('todos');
+
+    const filterOptions = [
+        { id: 'todos', label: 'Todos' },
+        { id: 'pdf', label: 'PDF' },
+        { id: 'video', label: 'Video' },
+        { id: 'youtube', label: 'YouTube' },
+        { id: 'imagen', label: 'Imagen' },
+        { id: 'enlace', label: 'Enlaces' },
+        { id: 'texto', label: 'Texto' }
+    ];
+
+    const filteredResources = resources.filter(res => filterType === 'todos' || res.type === filterType);
+
     return (
         <div className="category-container animate-fade-in">
             {!categoryFilter ? (
-                <div style={{ marginTop: '2rem' }}>
+                <div className="container" style={{ marginTop: '2rem', paddingBottom: '4rem' }}>
                     <h2 style={{ textAlign: 'center', marginBottom: '3rem', color: 'var(--primary)', fontSize: '2.5rem' }}>Explorar Áreas</h2>
 
-                    <h3 style={{ marginBottom: '1.5rem', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.5rem', color: 'var(--text-secondary)' }}>Profesorados</h3>
+                    <h3 style={{ textAlign: 'center', marginBottom: '1.5rem', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.5rem', color: 'var(--text-secondary)' }}>Profesorados</h3>
                     <div className="grid grid-cols-1 md-grid-cols-2 lg-grid-cols-3" style={{ marginBottom: '4rem' }}>
                         {PROFESORADOS.map(prof => {
                             const theme = getCategoryTheme(prof);
@@ -141,7 +156,7 @@ const Categories = () => {
                         })}
                     </div>
 
-                    <h3 style={{ marginBottom: '1.5rem', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.5rem', color: 'var(--text-secondary)' }}>Áreas Transversales</h3>
+                    <h3 style={{ textAlign: 'center', marginBottom: '1.5rem', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.5rem', color: 'var(--text-secondary)' }}>Áreas Transversales</h3>
                     <div className="grid grid-cols-1 md-grid-cols-2 lg-grid-cols-3">
                         {AREAS_TRANSVERSALES.map(area => {
                             const theme = getCategoryTheme(area);
@@ -163,36 +178,71 @@ const Categories = () => {
             ) : (
                 <>
                     <div className={`category-header ${theme.className}`}>
-                        <div className="category-bg-icons">
-                            {theme.icons.map((Icon, idx) => (
-                                <Icon key={idx} size={84} className="category-icon-anim" />
-                            ))}
+                        <div className="container" style={{ position: 'relative', zIndex: 1, padding: '0 1.5rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <div className="category-bg-icons">
+                                {theme.icons.map((Icon, idx) => (
+                                    <Icon key={idx} size={84} className="category-icon-anim" />
+                                ))}
+                            </div>
+                            <h1 className="category-title">{categoryFilter}</h1>
+                            <p className="category-subtitle">{theme.subtitle}</p>
                         </div>
-                        <h1 className="category-title">{categoryFilter}</h1>
-                        <p className="category-subtitle">{theme.subtitle}</p>
                     </div>
 
-                    <div className="resources-grid">
+                    {/* Filter Bar */}
+                    <div style={{ background: 'var(--white)', borderBottom: '1px solid var(--border-color)', position: 'sticky', top: '70px', zIndex: 10, padding: '1rem 0' }}>
+                        <div className="container">
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                                <Filter size={18} color="var(--text-secondary)" />
+                                <span style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-secondary)' }}>Filtrar por:</span>
+                                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                    {filterOptions.map(opt => (
+                                        <button
+                                            key={opt.id}
+                                            onClick={() => setFilterType(opt.id)}
+                                            style={{
+                                                padding: '0.4rem 1rem',
+                                                borderRadius: '99px',
+                                                fontSize: '0.85rem',
+                                                fontWeight: '600',
+                                                background: filterType === opt.id ? 'var(--primary)' : 'var(--bg-color)',
+                                                color: filterType === opt.id ? 'white' : 'var(--text-secondary)',
+                                                border: `1px solid ${filterType === opt.id ? 'var(--primary)' : 'var(--border-color)'}`,
+                                                transition: 'all 0.2s'
+                                            }}
+                                        >
+                                            {opt.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="container" style={{ paddingTop: '3.0rem', paddingBottom: '5rem' }}>
                         {loading ? (
                             <div className="loading-state text-center py-5">
-                                <p className="text-secondary">Cargando recursos de {categoryFilter}...</p>
+                                <p className="text-secondary">Cargando recursos...</p>
                             </div>
-                        ) : resources.length > 0 ? (
-                            <div className="grid grid-cols-1 md-grid-cols-2 lg-grid-cols-3">
-                                {resources.map((resource) => (
+                        ) : filteredResources.length > 0 ? (
+                            <div className="resources-grid-dense">
+                                {filteredResources.map((resource) => (
                                     <ResourceCard key={resource.id} resource={resource} />
                                 ))}
                             </div>
                         ) : (
                             <div className="empty-state text-center py-5">
-                                <Filter size={48} className="mx-auto mb-3 text-secondary" />
-                                <h3 className="mb-2">Aún no hay recursos aquí</h3>
-                                <p className="text-secondary">No se han subido materiales en la sección '{categoryFilter}'.</p>
+                                <AlertCircle size={48} className="mx-auto mb-3 text-secondary" />
+                                <h3 className="mb-2">No se encontraron resultados</h3>
+                                <p className="text-secondary">Pruebe cambiando los filtros de tipo de recurso.</p>
                             </div>
                         )}
                     </div>
                 </>
             )}
+            <div className="animate-fade-in mt-10">
+                <LandingFooter />
+            </div>
         </div>
     );
 };

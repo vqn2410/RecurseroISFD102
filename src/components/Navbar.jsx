@@ -1,9 +1,9 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth, db } from '../services/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { LogOut, User, Menu, X, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/navbar.css';
 
 const PROFESORADOS = [
@@ -14,18 +14,43 @@ const AREAS_TRANSVERSALES = [
     "Educación Ambiental", "ESI (Educación Sexual Integral)", "Fonoaudiología", "Tics"
 ];
 
-const Navbar = ({ user, userData }) => {
+const Navbar = ({ user, userData, transparent = false }) => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 50) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const searchParams = new URLSearchParams(location.search);
+    const categoryFilter = searchParams.get('tipo');
+
+    let isAutoTransparent = transparent;
+    if (location.pathname === '/sobre-ensam') {
+        isAutoTransparent = true;
+    } else if (location.pathname === '/categorias' && categoryFilter) {
+        isAutoTransparent = true;
+    }
 
     const isAdmin = !userData || (userData?.rol && ['admin', 'administrador'].includes(userData.rol.toLowerCase()));
+    const isTransparentActive = isAutoTransparent && !isScrolled;
 
     const handleLogout = async () => {
         try {
             if (user) {
-                // Actualizar DB sin bloquear (Fire-and-forget), por si la red falla no nos estanque el logout
+                // Actualizar DB sin bloquear (Fire-and-forget)
                 updateDoc(doc(db, 'docentes', user.uid), { onlineStatus: false }).catch(err => {
                     console.warn("Could not update online status immediately:", err);
                 });
@@ -34,13 +59,11 @@ const Navbar = ({ user, userData }) => {
             // Realizar sign out oficial
             await signOut(auth);
 
-            // Forzar una redirección dura para destruir todo el estado residual de React y el Router.
-            // Esto es 100% efectivo contra condiciones de carrera.
+            // Forzar una redirección dura
             window.location.href = '/';
 
         } catch (error) {
             console.error('Error logging out: ', error);
-            // Redirigir de todos modos como fallback
             window.location.href = '/';
         }
     };
@@ -49,11 +72,14 @@ const Navbar = ({ user, userData }) => {
     const closeMenu = () => setIsOpen(false);
 
     return (
-        <nav className="navbar">
+        <nav className={`navbar ${isTransparentActive ? 'navbar-transparent' : ''}`}>
             <div className="navbar-container">
                 <Link to="/" className="navbar-brand" onClick={closeMenu}>
-                    <img src="https://i.postimg.cc/j5LScsMX/Diseno-sin-titulo.png" alt="Logo ISFD 102" className="brand-logo" />
-                    <span className="brand-text">Recursero Académico de la Unidad Académica <br />Escuela Normal Superior Antonio Mentruyt <br />ISFD N°102</span>
+                    <img src="https://cdn.phototourl.com/member/2026-04-01-18b3281e-b51e-4ec6-b664-ab4e364d159d.png" alt="Logo ISFD 102" className="brand-logo" />
+                    <div className="brand-text">
+                        <span className="brand-title">Recursero Académico</span>
+                        <span className="brand-subtitle">UA ENSAM | ISFD N°102</span>
+                    </div>
                 </Link>
 
                 <div className={`navbar-search-desktop ${isSearchExpanded ? 'expanded' : 'collapsed'}`}>

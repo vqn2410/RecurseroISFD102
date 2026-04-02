@@ -35,56 +35,95 @@ const SearchPage = () => {
         return () => unsubscribe();
     }, []);
 
-    // Filter resources based on query
+    const [filterType, setFilterType] = useState('todos');
+
+    const filterOptions = [
+        { id: 'todos', label: 'Todos' },
+        { id: 'pdf', label: 'PDF' },
+        { id: 'video', label: 'Video' },
+        { id: 'youtube', label: 'YouTube' },
+        { id: 'imagen', label: 'Imagen' },
+        { id: 'enlace', label: 'Enlaces' },
+        { id: 'texto', label: 'Texto' }
+    ];
+
+    // Filter resources based on query and type
     const filteredResources = resources.filter((resource) => {
         const queryLower = searchQuery.toLowerCase();
-
-        const matchTitle = resource.title?.toLowerCase().includes(queryLower);
-        const matchDescription = resource.description?.toLowerCase().includes(queryLower);
-        const matchCategory = resource.category?.toLowerCase().includes(queryLower);
-
-        // check categories array
-        const matchCategoriesArray = resource.categories?.some(cat => cat.toLowerCase().includes(queryLower));
-
-        // check tags array
-        const matchTags = resource.tags?.some(tag => tag.toLowerCase().includes(queryLower));
-
-        return matchTitle || matchDescription || matchCategory || matchCategoriesArray || matchTags;
+        const matchQuery = resource.title?.toLowerCase().includes(queryLower) ||
+                           resource.description?.toLowerCase().includes(queryLower) ||
+                           resource.tags?.some(tag => tag.toLowerCase().includes(queryLower));
+        
+        const matchType = filterType === 'todos' || resource.type === filterType;
+        
+        return matchQuery && matchType;
     });
 
     return (
-        <div className="category-container animate-fade-in">
-            <div className="category-header bg-white" style={{ background: 'var(--surface-color)', color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)' }}>
-                <div className="category-bg-icons" style={{ opacity: 0.05, color: 'var(--primary)' }}>
-                    <Search size={84} className="category-icon-anim" />
+        <div className="animate-fade-in" style={{ paddingBottom: '5rem' }}>
+            <div className="category-header" style={{ background: 'var(--white)', borderBottom: '1px solid var(--border-color)', marginBottom: 0 }}>
+                <div className="container" style={{ position: 'relative', zIndex: 1, padding: '4rem 1.5rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div className="category-bg-icons" style={{ opacity: 0.05, color: 'var(--primary)' }}>
+                        <Search size={84} />
+                    </div>
+                    <h1 className="category-title" style={{ color: 'var(--primary)', fontSize: '2.5rem' }}>Resultados de Búsqueda</h1>
+                    <p className="category-subtitle" style={{ color: 'var(--text-secondary)' }}>
+                        Mostrando hallazgos para: <strong>"{searchQuery}"</strong>
+                    </p>
                 </div>
-                <h1 className="category-title" style={{ color: 'var(--primary)' }}>Resultados de Búsqueda</h1>
-                <p className="category-subtitle" style={{ color: 'var(--text-secondary)' }}>
-                    Buscando: <strong>"{searchQuery}"</strong>
-                </p>
             </div>
 
-            <div className="resources-grid">
+            {/* Filter Bar */}
+            <div style={{ background: 'var(--white)', borderBottom: '1px solid var(--border-color)', position: 'sticky', top: '70px', zIndex: 10, padding: '1rem 0' }}>
+               <div className="container">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                        <Filter size={18} color="var(--text-secondary)" />
+                        <span style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-secondary)' }}>Filtrar por:</span>
+                        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                            {filterOptions.map(opt => (
+                                <button
+                                    key={opt.id}
+                                    onClick={() => setFilterType(opt.id)}
+                                    style={{
+                                        padding: '0.4rem 1rem',
+                                        borderRadius: '99px',
+                                        fontSize: '0.85rem',
+                                        fontWeight: '600',
+                                        background: filterType === opt.id ? 'var(--primary)' : 'var(--bg-color)',
+                                        color: filterType === opt.id ? 'white' : 'var(--text-secondary)',
+                                        border: `1px solid ${filterType === opt.id ? 'var(--primary)' : 'var(--border-color)'}`,
+                                        transition: 'all 0.2s'
+                                    }}
+                                >
+                                    {opt.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+               </div>
+            </div>
+
+            <div className="container" style={{ marginTop: '3rem' }}>
                 {!searchQuery ? (
-                    <div className="alert alert-error mt-10" style={{ maxWidth: '600px', margin: '2rem auto' }}>
+                    <div className="alert alert-error" style={{ maxWidth: '600px', margin: '2rem auto' }}>
                         <AlertCircle size={16} />
                         <span>Por favor, ingrese un término de búsqueda en la barra superior.</span>
                     </div>
                 ) : loading ? (
                     <div className="loading-state text-center py-5">
-                        <p className="text-secondary">Buscando recursos en tiempo real...</p>
+                        <p className="text-secondary">Buscando recursos...</p>
                     </div>
                 ) : filteredResources.length > 0 ? (
-                    <div className="grid grid-cols-1 md-grid-cols-2 lg-grid-cols-3">
+                    <div className="resources-grid-dense">
                         {filteredResources.map((resource) => (
                             <ResourceCard key={resource.id} resource={resource} />
                         ))}
                     </div>
                 ) : (
                     <div className="empty-state text-center py-5">
-                        <Filter size={48} className="mx-auto mb-3 text-secondary" />
+                        <Search size={48} className="mx-auto mb-3 text-secondary" />
                         <h3 className="mb-2">No se encontraron resultados</h3>
-                        <p className="text-secondary">No hay materiales que coincidan con "{searchQuery}". Pruebe con otros términos o etiquetas.</p>
+                        <p className="text-secondary">Pruebe con otros términos o cambie los filtros.</p>
                     </div>
                 )}
             </div>
