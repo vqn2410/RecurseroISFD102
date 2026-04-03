@@ -1,7 +1,6 @@
 import { BookOpen, History, MapPin, Award, Heart, Shield, Calendar, Music, Users, Instagram } from 'lucide-react';
 import { LandingFooter } from '../components/LandingUI';
 import useReveal from '../hooks/useReveal';
-import '../styles/sobre-ensam.css';
 
 export default function SobreEnsam() {
     useReveal();
@@ -19,11 +18,11 @@ export default function SobreEnsam() {
 
     return (
         <div style={{ background: 'var(--white)' }}>            <header className="hero main-hero-ensam">
-                <div className="hero-content reveal" style={{ textAlign: 'center', margin: '0 auto', zIndex: 2 }}>
-                    <h1 className="hero-title ensam-title-main">Nuestra Historia</h1>
-                    <p className="hero-description" style={{ color: '#cbd5e1' }}>Identidad, trayectoria y memoria de la Escuela Normal Superior "Antonio Mentruyt".</p>
-                </div>
-            </header>
+            <div className="hero-content reveal" style={{ textAlign: 'center', margin: '0 auto', zIndex: 2 }}>
+                <h1 className="hero-title ensam-title-main">Nuestra Historia</h1>
+                <p className="hero-description" style={{ color: '#cbd5e1' }}>Identidad, trayectoria y memoria de la Escuela Normal Superior "Antonio Mentruyt".</p>
+            </div>
+        </header>
 
             <section className="section" style={{ maxWidth: '1100px', margin: '0 auto', padding: '6rem 2rem' }}>
 
@@ -43,7 +42,7 @@ export default function SobreEnsam() {
                     </div>
                     <div className="reveal reveal-delay-1">
                         <img
-                            src="https://lh3.googleusercontent.com/sitesv/APaQ0STSxisFix1TicRdHVY2wFuyZBVtKrOzTZi6s-5mAOjP_LGVkNnPS_5PSFbLBRp3ZNOR0d3-I2cDe72-4RcTIJdCzqXBh8lOIZuFjSJS3c3cKKNK2Lj_2MO0KuM5xvnLjJ0jgG0fhRVQO3EKQ_dgs84TvJ6OnyeuDnt4sivHUlDKRc6XuRfOjpJYP0MIirulvarfFBvxN1LC50WGR5WbfHDNlZIN7vw1kiJedQ8=w1280"
+                            src="https://cdn.phototourl.com/member/2026-04-02-a30efa6f-b6b1-432a-a48f-7dc4d8609cb3.jpg"
                             alt="Don Antonio Mentruyt"
                             style={{ width: '100%', borderRadius: '24px', boxShadow: 'var(--shadow-hover)', border: '1px solid var(--border)' }}
                         />
@@ -93,9 +92,13 @@ export default function SobreEnsam() {
                         <p style={{ color: 'var(--text-light)', lineHeight: '1.7', marginBottom: '1.5rem' }}>
                             El actual edificio de Manuel Castro 990 fue inaugurado en mayo de 1948, con la presencia del entonces presidente Juan Domingo Perón. A partir de entonces, la institución pasó a llamarse <strong>Escuela Normal Mixta de Lomas de Zamora</strong>, convirtiéndose un referente educativo y cultural del distrito.
                         </p>
-                        <p style={{ color: 'var(--text-light)', lineHeight: '1.7' }}>
+                        <p style={{ color: 'var(--text-light)', lineHeight: '1.7', marginBottom: '1.5rem' }}>
                             La Biblioteca "Antonio Mentruyt", que comenzó como la biblioteca de la Sociedad Popular Modelo, fue reconocida oficialmente en 1931 como Biblioteca de la Nación, siendo considerada una de las mejores bibliotecas escolares de la zona sur.
                         </p>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1.5rem' }}>
+                            <img src="https://cdn.phototourl.com/member/2026-04-02-b9307132-620f-449c-9341-e0c91e83653a.jpg" alt="Escuela en construcción" style={{ width: '100%', borderRadius: '12px' }} />
+                            <img src="https://cdn.phototourl.com/member/2026-04-02-87b479a7-8765-4f7d-8117-4fbc8d03fe70.jpg" alt="Obra ENSAM" style={{ width: '100%', borderRadius: '12px' }} />
+                        </div>
                     </div>
                     <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
@@ -111,6 +114,7 @@ export default function SobreEnsam() {
                         <p style={{ color: 'var(--text-light)', lineHeight: '1.7' }}>
                             Dos años después, en 1988, se implementó el Magisterio de Educación Básica (M.E.B.), con una trayectoria de dos promociones.
                         </p>
+                        <img src="https://cdn.phototourl.com/member/2026-04-02-5a6ae5cf-858f-4b3b-acc4-297d4c97f096.jpg" alt="Promo MEB" style={{ width: '100%', marginTop: '1.5rem', borderRadius: '16px' }} />
                     </div>
                 </div>
 
@@ -131,7 +135,7 @@ export default function SobreEnsam() {
                 {/* Building & Library with Images */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem', marginBottom: '8rem' }}>
                     <div className="card reveal reveal-delay-1" style={{ padding: 0, overflow: 'hidden' }}>
-                        <img src="https://lh3.googleusercontent.com/sitesv/APaQ0SSGGAqH2IeHnxVB1QG1Is77iMztJcgye_dI79IqokLMxuUFBFTE_RYtI8OAv_WGkDoNyWISOxh5FJrUJfIZ718hWMex8J-trN3wC7Bd0DHRqs0fCOg_L1w6Yu5bAiHyRk8D6GkJBkUkhSH5IBt7cGjgcldb55nJHnSkspmKHNJMtyB39F5-TgmUoWZDMPZerIF6LaeDCi9KH5b6ZgDEw5elCXCSXbPcV8k5zUo=w1280" style={{ width: '100%', height: '240px', objectFit: 'cover' }} alt="Quinta Las Golondrinas" />
+                        <img src="https://cdn.phototourl.com/member/2026-04-02-f9a988f2-b3fb-4d94-82f3-5393a7854b53.jpg" style={{ width: '100%', height: '240px', objectFit: 'cover' }} alt="Quinta Las Golondrinas" />
                         <div style={{ padding: '2.5rem' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
                                 <MapPin size={24} color="var(--color-secondary)" />
@@ -141,7 +145,7 @@ export default function SobreEnsam() {
                         </div>
                     </div>
                     <div className="card reveal reveal-delay-2" style={{ padding: 0, overflow: 'hidden' }}>
-                        <img src="https://lh3.googleusercontent.com/sitesv/APaQ0STurGWbt9eHdHWFoVbhc_9QyvLrJSEQRJhriAhXfIllDO14dnu9AsU0WAC79FVL4BJFbd_HyuKLFNCmpJiMpVK144sALrT-K8Glckb5ne-HQUaQNDLVSl_GXFrYoFUR_nzSjVmXOKBeIi9MhQOpl3TZ7L08XNKXyniAmIs5ZA2ZjkMTyy6LwVWVHRKdQTZa2RuXBoVHMpJMqRxaY1IRfhVBOzh0i9NAN-1QL4U=w1280" style={{ width: '100%', height: '240px', objectFit: 'cover' }} alt="Biblioteca Mentruyt" />
+                        <img src="https://cdn.phototourl.com/member/2026-04-02-b998eb49-8897-43fa-8e94-0a718d483305.png" style={{ width: '100%', height: '240px', objectFit: 'cover' }} alt="Biblioteca Mentruyt" />
                         <div style={{ padding: '2.5rem' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
                                 <Award size={24} color="var(--color-primary)" />
@@ -157,12 +161,33 @@ export default function SobreEnsam() {
                                 <li><strong>Categoría:</strong> Monumento Histórico Nacional</li>
                             </ul><br />
                             <p style={{ color: 'var(--text-light)', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <strong>Redes Sociales:</strong> 
+                                <strong>Redes Sociales:</strong>
                                 <a href="https://www.instagram.com/bibliotecamentruyt/?hl=es" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                                     <Instagram size={16} /> @bibliotecamentruyt
                                 </a>
                             </p>
 
+                        </div>
+                    </div>
+                </div>
+                {/* Archivo Histórico Gallery */}
+                <div className="reveal" style={{ marginTop: '4rem', padding: '4rem', background: '#f8fafc', borderRadius: '32px', border: '1px solid var(--border)' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+                        <h2 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Archivo Histórico Visual</h2>
+                        <div style={{ width: '60px', height: '3px', background: 'var(--color-primary)', margin: '0 auto' }}></div>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
+                        <div className="reveal reveal-delay-1" style={{ textAlign: 'center' }}>
+                            <img src="https://cdn.phototourl.com/member/2026-04-02-0b4a0592-3956-46e0-a10d-ccdfa3c63335.jpg" alt="Maestras 1917" style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', borderRadius: '16px', boxShadow: 'var(--shadow-md)', border: '4px solid white' }} />
+                            <p style={{ color: 'var(--text-light)', fontSize: '0.9rem', marginTop: '1rem', fontWeight: '600' }}>Grupo de Maestras (1917)</p>
+                        </div>
+                        <div className="reveal reveal-delay-2" style={{ textAlign: 'center' }}>
+                            <img src="https://cdn.phototourl.com/member/2026-04-02-7a13024e-860d-4f37-8cf4-f917e1b23996.jpg" alt="Alumnos" style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', borderRadius: '16px', boxShadow: 'var(--shadow-md)', border: '4px solid white' }} />
+                            <p style={{ color: 'var(--text-light)', fontSize: '0.9rem', marginTop: '1rem', fontWeight: '600' }}>Alumnos en la Quinta Las Golondrinas</p>
+                        </div>
+                        <div className="reveal reveal-delay-3" style={{ textAlign: 'center' }}>
+                            <img src="https://cdn.phototourl.com/member/2026-04-02-b42c64fa-8042-4101-b12d-15c4b221fd11.jpg" alt="Perón en ENSAM" style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', borderRadius: '16px', boxShadow: 'var(--shadow-md)', border: '4px solid white' }} />
+                            <p style={{ color: 'var(--text-light)', fontSize: '0.9rem', marginTop: '1rem', fontWeight: '600' }}>Acto de Inauguración (1948)</p>
                         </div>
                     </div>
                 </div>
@@ -192,15 +217,13 @@ export default function SobreEnsam() {
                 }}></div>
 
                 <div style={{ maxWidth: '950px', margin: '0 auto', position: 'relative', zIndex: 2, textAlign: 'center' }}>
-                    <div className="reveal" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2.5rem' }}>
+                    <div className="reveal" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem' }}>
                         <h2 style={{ fontSize: '3rem', fontWeight: '800', lineHeight: '1.1', letterSpacing: '-0.02em', color: 'white' }}>Memoria, Verdad y Justicia <br /><span style={{ color: '#f87171' }}>La División Perdida</span></h2>
                         <div style={{ width: '80px', height: '2px', background: 'var(--color-secondary)' }}></div>
                         <p style={{ fontSize: '1.4rem', lineHeight: '1.8', color: '#cbd5e1', maxWidth: '800px' }}>
                             "La División Perdida" rinde homenaje a estudiantes y docentes desaparecidos, rescatando la idea de que ningún compañero desaparecido pertenece al olvido.
                         </p>
-                        <p style={{ fontSize: '1.1rem', fontStyle: 'italic', color: '#94a3b8', maxWidth: '700px', lineHeight: '1.6' }}>
-                            Hoy, no es solo un homenaje: es una lección viva de memoria que forma parte de la identidad de la ENSAM y de su misión educativa.
-                        </p>
+
                     </div>
                 </div>
             </section>
@@ -212,7 +235,7 @@ export default function SobreEnsam() {
                         <Music size={40} color="var(--color-primary)" />
                         <h2 style={{ fontSize: '2.5rem' }}>Himno a la Escuela</h2>
                     </div>
-                    
+
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '4rem', alignItems: 'center' }}>
                         <div style={{ fontStyle: 'italic', fontSize: '1.1rem', lineHeight: '1.9', color: 'var(--text-primary)', textAlign: 'left', background: 'white', padding: '2.5rem', borderRadius: '24px', boxShadow: 'var(--shadow-sm)' }}>
                             <p>"Compañeros, sepamos vivir el momento feliz que hoy nos une.<br />
@@ -221,9 +244,9 @@ export default function SobreEnsam() {
                             <br />
                             <p>"Por la patria, hogar y escuela, por la dicha y amistad.<br />
                                 Avancemos bien alta la frente, avancemos gozando de paz."</p>
-                            
+
                             <hr style={{ margin: '1.5rem 0', border: '0', borderTop: '1px solid var(--border)', opacity: 0.5 }} />
-                            
+
                             <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: '500', fontStyle: 'normal' }}>
                                 Letra: Prof. Osvaldo Abruzzetti y Prof. María Luisa Tersano <br />
                                 Música: Prof. Aderm Lemos
@@ -231,13 +254,13 @@ export default function SobreEnsam() {
                         </div>
 
                         <div style={{ borderRadius: '24px', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', aspectRatio: '16/9' }}>
-                            <iframe 
-                                width="100%" 
-                                height="100%" 
-                                src="https://www.youtube.com/embed/4CI6BPkip5U" 
-                                title="Himno ENSAM" 
-                                frameBorder="0" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            <iframe
+                                width="100%"
+                                height="100%"
+                                src="https://www.youtube.com/embed/4CI6BPkip5U"
+                                title="Himno ENSAM"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen
                             ></iframe>
                         </div>
