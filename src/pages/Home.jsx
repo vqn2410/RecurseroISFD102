@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import ResourceCard from '../components/ResourceCard';
 import { Layers, Search } from 'lucide-react';
 import '../styles/home.css';
+import NewsSection from '../components/NewsSection';
 import { LandingFooter } from '../components/LandingUI';
 
 const Home = () => {

@@ -16,6 +16,7 @@ const Login = lazy(() => import('./components/Login'));
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
 const ChangePassword = lazy(() => import('./components/ChangePassword'));
 const ResourceDetail = lazy(() => import('./pages/ResourceDetail'));
+const NewsPage = lazy(() => import('./pages/NewsPage'));
 
 function AppContent() {
   const [user, setUser] = useState(null);
@@ -96,6 +97,7 @@ function AppContent() {
             <Route path="/login" element={!user ? <Login /> : <Navigate to={isFirstLogin ? "/cambiar-password" : "/admin"} replace />} />
             <Route path="/cambiar-password" element={user && isFirstLogin ? <ChangePassword /> : <Navigate to={user ? "/admin" : "/login"} replace />} />
             <Route path="/admin" element={adminElement} />
+            <Route path="/noticias" element={<NewsPage />} />
           </Routes>
         </Suspense>
       </main>

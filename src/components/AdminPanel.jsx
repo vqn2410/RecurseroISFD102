@@ -6,7 +6,8 @@ import RegisterUser from './RegisterUser';
 import DocentesPanel from './DocentesPanel';
 import ResourceCard from './ResourceCard';
 import SolicitudesPanel from './SolicitudesPanel';
-import { PlusCircle, List, UserPlus, Trash2, Users, ClipboardList, Pencil } from 'lucide-react';
+import AdminNoticiasPanel from './AdminNoticiasPanel';
+import { PlusCircle, List, UserPlus, Trash2, Users, ClipboardList, Pencil, Newspaper } from 'lucide-react';
 import '../styles/admin.css';
 
 const AdminPanel = ({ userData }) => {
@@ -96,6 +97,12 @@ const AdminPanel = ({ userData }) => {
                                 onClick={() => setActiveTab('register')}
                             >
                                 <UserPlus size={18} /> Registrar
+                            </button>
+                            <button
+                                className={`btn ${activeTab === 'noticias' ? 'btn-primary' : 'btn-outline'}`}
+                                onClick={() => setActiveTab('noticias')}
+                            >
+                                <Newspaper size={18} /> Noticias
                             </button>
                         </>
                     )}
@@ -201,6 +208,10 @@ const AdminPanel = ({ userData }) => {
 
                 {activeTab === 'solicitudes' && isAdmin && (
                     <SolicitudesPanel />
+                )}
+
+                {activeTab === 'noticias' && isAdmin && (
+                    <AdminNoticiasPanel userData={userData} />
                 )}
             </div>
         </div>

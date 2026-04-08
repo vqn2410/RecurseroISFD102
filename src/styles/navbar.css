@@ -378,4 +378,48 @@
 
 .navbar-transparent .btn-outline:hover {
     background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* InfoENSAM Badge Styling */
+.info-ensam-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.ensam-pill {
+    background-color: #f87171; /* A soft red like in the image */
+    color: white !important;
+    padding: 2px 12px;
+    border-radius: 999px;
+    display: inline-block;
+    transition: var(--transition);
+    box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.7);
+}
+
+.pulse-red .ensam-pill {
+    animation: heartbeat-pill 2s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+@keyframes heartbeat-pill {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.7);
+    }
+    70% {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 10px rgba(248, 113, 113, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(248, 113, 113, 0);
+    }
+}
+
+.pulse-red:hover .ensam-pill {
+    background-color: #ef4444; /* Brighter red on hover */
+    animation: none;
 }

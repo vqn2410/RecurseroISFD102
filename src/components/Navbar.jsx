@@ -39,11 +39,7 @@ const Navbar = ({ user, userData, transparent = false }) => {
     const categoryFilter = searchParams.get('tipo');
 
     let isAutoTransparent = transparent;
-    if (location.pathname === '/sobre-ensam') {
-        isAutoTransparent = true;
-    } else if (location.pathname === '/categorias' && categoryFilter) {
-        isAutoTransparent = true;
-    }
+    // Removed location.pathname overrides here for consistent legibility
 
     const isAdmin = !userData || (userData?.rol && ['admin', 'administrador'].includes(userData.rol.toLowerCase()));
     const isTransparentActive = isAutoTransparent && !isScrolled;
@@ -125,6 +121,10 @@ const Navbar = ({ user, userData, transparent = false }) => {
                         Sobre el ENSAM
                     </Link>
 
+                    <Link to="/noticias" className="dropdown-btn" style={{ textDecoration: 'none' }} onClick={closeMenu}>
+                        Noticias
+                    </Link>
+
                     <div className="dropdown">
                         <button className="dropdown-btn">Profesorados</button>
                         <div className="dropdown-content">
@@ -192,6 +192,12 @@ const Navbar = ({ user, userData, transparent = false }) => {
                     <div className="mobile-section">
                         <Link to="/sobre-ensam" className="mobile-section-title" style={{ display: 'block', textDecoration: 'none', marginBottom: '1rem', color: 'var(--primary)' }} onClick={closeMenu}>
                             Sobre el ENSAM
+                        </Link>
+                    </div>
+
+                    <div className="mobile-section">
+                        <Link to="/noticias" className="mobile-section-title" style={{ display: 'block', textDecoration: 'none', marginBottom: '1rem', color: 'var(--primary)' }} onClick={closeMenu}>
+                            Noticias
                         </Link>
                     </div>
 
