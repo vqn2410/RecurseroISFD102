@@ -68,6 +68,9 @@ export const LandingFooter = () => {
           <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
             &copy; {new Date().getFullYear()} Unidad Académica de la Escuela Normal Superior "Antonio Mentruyt" | ISFD N° 102 - Todos los derechos reservados.
           </p>
+          <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
+            Designed by NvProductions
+          </p>
         </div>
       </div>
     </footer>
