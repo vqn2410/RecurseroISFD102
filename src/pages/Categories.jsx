@@ -138,18 +138,25 @@ const Categories = () => {
                     <h2 style={{ textAlign: 'center', marginBottom: '3rem', color: 'var(--primary)', fontSize: '2.5rem' }}>Explorar Áreas</h2>
 
                     <h3 style={{ textAlign: 'center', marginBottom: '1.5rem', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.5rem', color: 'var(--text-secondary)' }}>Profesorados</h3>
-                    <div className="grid grid-cols-1 md-grid-cols-2 lg-grid-cols-3" style={{ marginBottom: '4rem' }}>
+                    <div className="resources-grid-dense" style={{ marginBottom: '4rem' }}>
                         {PROFESORADOS.map(prof => {
                             const theme = getCategoryTheme(prof);
                             const FirstIcon = theme.icons[0];
                             return (
                                 <Link to={`/categorias?tipo=${encodeURIComponent(prof)}`} key={prof} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                    <div className={`card ${theme.className} category-card-anim`} style={{ height: '100%', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', transition: 'transform 0.2s', padding: '2.5rem 1rem' }}>
-                                        <div style={{ background: 'rgba(255,255,255,0.2)', padding: '1rem', borderRadius: '50%', marginBottom: '1.2rem', display: 'inline-flex' }}>
-                                            <FirstIcon size={48} strokeWidth={2} />
+                                    <div className={`resource-card-square ${theme.className} category-card-v2 animate-fade-in`} style={{ cursor: 'pointer' }}>
+                                        <div className="category-card-bg-icons">
+                                            {theme.icons.map((Icon, idx) => (
+                                                <Icon key={idx} size={48} className="bg-icon-svg" />
+                                            ))}
                                         </div>
-                                        <h3 style={{ margin: '0 0 0.5rem 0', fontWeight: 'bold' }}>{prof}</h3>
-                                        <p style={{ fontSize: '0.875rem', margin: 0, opacity: 0.9 }}>{theme.subtitle}</p>
+                                        <div className="category-card-content-v2">
+                                            <div className="category-icon-main">
+                                                <FirstIcon size={32} strokeWidth={2.5} />
+                                            </div>
+                                            <h3 className="category-card-title-v2">{prof}</h3>
+                                            <p className="category-card-desc-v2">{theme.subtitle}</p>
+                                        </div>
                                     </div>
                                 </Link>
                             )
@@ -157,18 +164,25 @@ const Categories = () => {
                     </div>
 
                     <h3 style={{ textAlign: 'center', marginBottom: '1.5rem', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.5rem', color: 'var(--text-secondary)' }}>Áreas Transversales</h3>
-                    <div className="grid grid-cols-1 md-grid-cols-2 lg-grid-cols-3">
+                    <div className="resources-grid-dense">
                         {AREAS_TRANSVERSALES.map(area => {
                             const theme = getCategoryTheme(area);
                             const FirstIcon = theme.icons[0];
                             return (
                                 <Link to={`/categorias?tipo=${encodeURIComponent(area)}`} key={area} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                    <div className={`card ${theme.className} category-card-anim`} style={{ height: '100%', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', transition: 'transform 0.2s', padding: '2.5rem 1rem' }}>
-                                        <div style={{ background: 'rgba(255,255,255,0.2)', padding: '1rem', borderRadius: '50%', marginBottom: '1.2rem', display: 'inline-flex' }}>
-                                            <FirstIcon size={48} strokeWidth={2} />
+                                    <div className={`resource-card-square ${theme.className} category-card-v2 animate-fade-in`} style={{ cursor: 'pointer' }}>
+                                        <div className="category-card-bg-icons">
+                                            {theme.icons.map((Icon, idx) => (
+                                                <Icon key={idx} size={48} className="bg-icon-svg" />
+                                            ))}
                                         </div>
-                                        <h3 style={{ margin: '0 0 0.5rem 0', fontWeight: 'bold' }}>{area}</h3>
-                                        <p style={{ fontSize: '0.875rem', margin: 0, opacity: 0.9 }}>{theme.subtitle}</p>
+                                        <div className="category-card-content-v2">
+                                            <div className="category-icon-main">
+                                                <FirstIcon size={32} strokeWidth={2.5} />
+                                            </div>
+                                            <h3 className="category-card-title-v2">{area}</h3>
+                                            <p className="category-card-desc-v2">{theme.subtitle}</p>
+                                        </div>
                                     </div>
                                 </Link>
                             )

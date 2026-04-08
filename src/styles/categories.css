@@ -160,3 +160,112 @@
         size: 48px !important;
     }
 }
+
+/* Category Cards V2 (Matches Resource Cards) */
+.category-card-v2 {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: 1.5rem !important;
+    border: none !important;
+    overflow: hidden;
+}
+
+.category-card-bg-icons {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem;
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.bg-icon-svg {
+    transform: rotate(-15deg);
+    color: white;
+    animation: floatCardIcon 8s ease-in-out infinite;
+    opacity: 0.8;
+}
+
+.bg-icon-svg:nth-child(2n) {
+    animation-duration: 12s;
+    animation-delay: -2s;
+}
+
+.bg-icon-svg:nth-child(3n) {
+    animation-duration: 10s;
+    animation-delay: -5s;
+}
+
+@keyframes floatCardIcon {
+    0%, 100% {
+        transform: translate(0, 0) rotate(-15deg);
+    }
+    33% {
+        transform: translate(10px, -15px) rotate(-10deg);
+    }
+    66% {
+        transform: translate(-5px, 10px) rotate(-20deg);
+    }
+}
+
+.category-card-content-v2 {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+.category-icon-main {
+    background: rgba(255, 255, 255, 0.2);
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    backdrop-filter: blur(4px);
+    color: white;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.category-card-v2:hover .category-icon-main {
+    transform: scale(1.1) rotate(5deg);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.category-card-title-v2 {
+    color: white !important;
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+    margin: 0 0 0.5rem 0 !important;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.category-card-desc-v2 {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
+    margin: 0 !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+@media (max-width: 480px) {
+    .category-card-v2 {
+        aspect-ratio: auto;
+        min-height: 200px;
+    }
+}
