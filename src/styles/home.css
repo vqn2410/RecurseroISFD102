@@ -61,3 +61,43 @@
     border-radius: var(--radius-lg);
     padding: 3rem 1rem;
 }
+
+/* Home Layout with Sidebar */
+.home-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2.5rem;
+    align-items: flex-start;
+}
+
+.main-section {
+    min-width: 0; /* Prevents grid overflow */
+}
+
+.news-sidebar {
+    width: 300px;
+}
+
+@media (max-width: 1024px) {
+    .home-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .news-sidebar {
+        width: 100%;
+        position: static !important;
+        order: 2;
+    }
+    
+    .main-section {
+        order: 1;
+    }
+}
+
+.hover-primary {
+    transition: color 0.2s;
+}
+
+.hover-primary:hover {
+    color: var(--primary) !important;
+}
